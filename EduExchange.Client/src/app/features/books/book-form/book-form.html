@@ -1,0 +1,118 @@
+<div class="container">
+  <mat-card>
+
+    <mat-card-header>
+      <mat-card-title>
+        {{ isEditMode ? '✏️ Edit Book Listing' : '📖 Add New Book Listing' }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{ isEditMode ? 'Update your book details and cover image' : 'Share your book with other students' }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <mat-form-field appearance="fill" class="edu-field sfull-width">
+        <mat-label>Book Title *</mat-label>
+        <input matInput [(ngModel)]="book.title" placeholder="e.g. Digital Electronics" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="edu-field full-width">
+        <mat-label>Author *</mat-label>
+        <input matInput [(ngModel)]="book.author" placeholder="e.g. Morris Mano" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="edu-field full-width">
+        <mat-label>Subject</mat-label>
+        <input matInput [(ngModel)]="book.subject" placeholder="e.g. VLSI, DSP" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="edu-field full-width">
+        <mat-label>Academic Level</mat-label>
+        <mat-select [(ngModel)]="book.academicLevel">
+          <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="edu-field full-width">
+        <mat-label>Condition</mat-label>
+        <mat-select [(ngModel)]="book.condition">
+          <mat-option *ngFor="let c of conditions" [value]="c">{{ c }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="edu-field full-width">
+        <mat-label>Category</mat-label>
+        <mat-select [(ngModel)]="book.categoryId">
+          <mat-option *ngFor="let cat of categories" [value]="cat.categoryId">
+            {{ cat.categoryName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="edu-field full-width">
+        <mat-label>📞 Contact Number *</mat-label>
+        <input matInput [(ngModel)]="book.contactNumber"
+          placeholder="e.g. 9876543210" maxlength="10" />
+        <mat-hint>Students will contact you on this number</mat-hint>
+      </mat-form-field>
+
+      <!-- IMAGE UPLOAD — shown in both create and edit mode -->
+      <div class="image-upload-section">
+        <div class="image-upload-label">
+          <mat-icon>add_photo_alternate</mat-icon>
+          Book Cover Image
+          <span class="optional">(Optional)</span>
+          <span class="change-hint" *ngIf="isEditMode && imagePreview">— change image below</span>
+        </div>
+
+        <!-- Preview -->
+        <div class="image-preview" *ngIf="imagePreview">
+          <img [src]="imagePreview" alt="Book cover preview" />
+          <button class="remove-btn" (click)="removeImage()" type="button">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        <!-- Upload Box — always show in create; show in edit only when no preview -->
+        <div class="upload-box" *ngIf="!imagePreview">
+          <mat-icon>cloud_upload</mat-icon>
+          <p>{{ isEditMode ? 'Click to upload a new cover image' : 'Click to upload book cover' }}</p>
+          <span>JPG, PNG up to 5MB</span>
+          <input type="file" accept="image/*" (change)="onImageSelected($event)" />
+        </div>
+
+        <!-- In edit mode with preview, allow replacing the image -->
+        <button class="replace-btn" *ngIf="isEditMode && imagePreview" type="button">
+          <label style="cursor:pointer; display:flex; align-items:center; gap:6px;">
+            <mat-icon>swap_horiz</mat-icon>
+            Replace Image
+            <input type="file" accept="image/*" (change)="onImageSelected($event)"
+                   style="display:none" />
+          </label>
+        </button>
+
+      </div>
+
+      <mat-form-field appearance="fill" class="edu-field full-width" *ngIf="isEditMode">
+        <mat-label>Status</mat-label>
+        <mat-select [(ngModel)]="book.status">
+          <mat-option value="Available">Available</mat-option>
+          <mat-option value="Exchanged">Exchanged</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button class="submit-btn" (click)="submitBook()" [disabled]="isSubmitting">
+        <mat-icon>{{ isSubmitting ? 'hourglass_empty' : 'save' }}</mat-icon>
+        {{ isSubmitting ? 'Saving...' : (isEditMode ? 'Update Book' : 'Submit Listing') }}
+      </button>
+      <button mat-button class="cancel-btn" routerLink="/my-books" [disabled]="isSubmitting">
+        <mat-icon>arrow_back</mat-icon> Cancel
+      </button>
+    </mat-card-actions>
+
+  </mat-card>
+</div>

@@ -1,0 +1,212 @@
+<div class="container">
+
+  <div class="header-section">
+    <div class="header-content">
+      <h1>{{ isBooksMode ? '📚 Books' : '✨ Discover' }}</h1>
+      <p>
+        {{ isBooksMode 
+           ? 'Browse and search for textbooks shared by students across India' 
+           : 'Find books, notes and items shared by students across your campus' 
+        }}
+      </p>
+    </div>
+    
+    <div class="header-actions" *ngIf="isBooksMode">
+      <button mat-flat-button color="primary" routerLink="/add-book" class="add-btn">
+        <mat-icon>add</mat-icon> List a Book
+      </button>
+    </div>
+  </div>
+
+  <div class="filter-tabs" *ngIf="!isBooksMode">
+    <button class="filter-tab" [class.active]="activeFilter === 'all'" (click)="setFilter('all')">
+      <span>🌟</span> All
+      <span class="tab-count">{{ allBooks.length + allNotes.length + allItems.length }}</span>
+    </button>
+    <button class="filter-tab" [class.active]="activeFilter === 'books'" (click)="setFilter('books')">
+      <span>📚</span> Books
+      <span class="tab-count">{{ allBooks.length }}</span>
+    </button>
+    <button class="filter-tab" [class.active]="activeFilter === 'notes'" (click)="setFilter('notes')">
+      <span>📝</span> Notes
+      <span class="tab-count">{{ allNotes.length }}</span>
+    </button>
+    <button class="filter-tab" [class.active]="activeFilter === 'items'" (click)="setFilter('items')">
+      <span>🎒</span> Items
+      <span class="tab-count">{{ allItems.length }}</span>
+    </button>
+  </div>
+
+  <div class="filter-card">
+    <mat-form-field appearance="outline" class="edu-field search-field">
+      <mat-label>🔍 Search by title, author, or keywords...</mat-label>
+      <input matInput [(ngModel)]="searchQuery" (input)="onSearch()" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="edu-field level-field"
+                    *ngIf="activeFilter === 'all' || activeFilter === 'books'">
+      <mat-label>🎓 Academic Level</mat-label>
+      <mat-select [(ngModel)]="selectedLevel" (selectionChange)="onSearch()">
+        <mat-option value="">All Levels</mat-option>
+        <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <ng-container *ngIf="showBooks">
+    <div class="section-header" *ngIf="!isBooksMode">
+      <span>📚</span>
+      <div>
+        <h2>Books</h2>
+        <p>{{ allBooks.length }} books available</p>
+      </div>
+    </div>
+
+    
+
+<div class="books-grid" *ngIf="books.length > 0; else noBooks">
+  <div class="book-card" *ngFor="let book of books">
+
+    <div class="book-image-wrap">
+      <img [src]="getBookImageUrl(book.imagePath)"
+           [alt]="book.title" class="book-img"
+           onerror="this.src='assets/default-book.svg'" />
+    </div>
+
+    <div class="book-title">{{ book.title }}</div>
+    <div class="book-author">by {{ book.author }}</div>
+
+    <div class="book-tags">
+      <span class="tag level">{{ book.academicLevel }}</span>
+      <span class="tag condition">{{ book.condition }}</span>
+    </div>
+
+    <div class="book-footer">
+      <span class="listed-by">👤 {{ book.owner?.username }}</span>
+      <span [class]="book.status === 'Available' ? 'badge-green' : 'badge-red'">
+        {{ book.status }}
+      </span>
+      <button mat-icon-button color="primary"
+              [routerLink]="['/books', book.bookId]">
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+    <ng-template #noBooks>
+      <div class="no-data">📭 No books matching your search.</div>
+    </ng-template>
+
+    <div class="pagination" *ngIf="booksTotalPages > 1">
+      <button class="page-btn nav-btn" (click)="goToBooksPage(booksPage - 1)" [disabled]="booksPage === 1">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <button class="page-btn" *ngFor="let p of booksPages"
+              [class.active]="p === booksPage" (click)="goToBooksPage(p)">
+        {{ p }}
+      </button>
+      <button class="page-btn nav-btn" (click)="goToBooksPage(booksPage + 1)" [disabled]="booksPage === booksTotalPages">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="showNotes && !isBooksMode">
+    <div class="section-header notes-header">
+      <span>📝</span>
+      <div>
+        <h2>Study Notes</h2>
+        <p>{{ allNotes.length }} documents shared</p>
+      </div>
+    </div>
+
+    <div class="notes-grid" *ngIf="notes.length > 0; else noNotes">
+      <div class="note-card" *ngFor="let note of notes">
+        <span class="note-emoji">📄</span>
+        <div class="note-title">{{ note.title }}</div>
+        <div class="note-subject">{{ note.subject }}</div>
+        <span class="note-tag">🎓 {{ note.academicLevel }}</span>
+        <div class="note-uploader">👤 {{ note.uploader?.username }}</div>
+        <div class="note-footer">
+          <button class="download-btn-small" (click)="downloadNote(note)">
+            <mat-icon>download</mat-icon> Download
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noNotes>
+      <div class="no-data">📭 No notes shared yet.</div>
+    </ng-template>
+
+    <div class="pagination" *ngIf="notesTotalPages > 1">
+      <button class="page-btn nav-btn" (click)="goToNotesPage(notesPage - 1)" [disabled]="notesPage === 1">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <button class="page-btn" *ngFor="let p of notesPages"
+              [class.active]="p === notesPage" (click)="goToNotesPage(p)">
+        {{ p }}
+      </button>
+      <button class="page-btn nav-btn" (click)="goToNotesPage(notesPage + 1)" [disabled]="notesPage === notesTotalPages">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="showItems && !isBooksMode">
+    <div class="section-header items-header">
+      <span>🎒</span>
+      <div>
+        <h2>Student Items</h2>
+        <p>{{ allItems.length }} listings</p>
+      </div>
+    </div>
+
+    <div class="books-grid" *ngIf="items.length > 0; else noItems">
+      <div class="book-card" *ngFor="let item of items" [routerLink]="['/items', item.itemId]" style="cursor:pointer">
+        <span class="item-type-badge">
+          {{ getTypeIcon(item.itemType) }} {{ item.itemType }}
+        </span>
+        <div class="book-content">
+          <div class="book-title">{{ item.name }}</div>
+          <div class="book-author" *ngIf="item.description">{{ item.description }}</div>
+          <div class="book-tags">
+            <span class="tag condition" *ngIf="item.condition">{{ item.condition }}</span>
+          </div>
+          <div class="book-footer">
+            <span class="listed-by">👤 {{ item.owner?.username }}</span>
+            <span [class]="item.status === 'Available' ? 'badge-green' : 'badge-red'">
+              {{ item.status }}
+            </span>
+            <button mat-icon-button color="primary" [routerLink]="['/items', item.itemId]">
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+
+    <ng-template #noItems>
+      <div class="no-data">📭 No items available yet.</div>
+    </ng-template>
+
+    <div class="pagination" *ngIf="itemsTotalPages > 1">
+      <button class="page-btn nav-btn" (click)="goToItemsPage(itemsPage - 1)" [disabled]="itemsPage === 1">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <button class="page-btn" *ngFor="let p of itemsPages"
+              [class.active]="p === itemsPage" (click)="goToItemsPage(p)">
+        {{ p }}
+      </button>
+      <button class="page-btn nav-btn" (click)="goToItemsPage(itemsPage + 1)" [disabled]="itemsPage === itemsTotalPages">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </ng-container>
+
+</div>

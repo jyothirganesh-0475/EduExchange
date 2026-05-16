@@ -1,0 +1,54 @@
+<app-assets-tabs activeTab="notes"></app-assets-tabs>
+
+<div class="my-notes-page">
+
+  <!-- Header -->
+  <div class="header-section">
+    <div class="title-group">
+      <h1>📝 My Notes</h1>
+      <p>{{ myNotes.length }} note{{ myNotes.length !== 1 ? 's' : '' }} uploaded</p>
+    </div>
+    <a routerLink="/upload-note" class="upload-btn">
+      <mat-icon>upload_file</mat-icon> Upload Notes
+    </a>
+  </div>
+
+  <!-- Notes Grid -->
+  <div class="notes-grid" *ngIf="myNotes.length > 0; else noNotes">
+    <div class="note-card" *ngFor="let note of myNotes">
+
+      <div class="note-icon-wrap">
+        <mat-icon class="note-icon">{{ getFileIcon(note.filePath) }}</mat-icon>
+      </div>
+
+      <span class="level-badge"
+            [style.background]="getLevelColor(note.academicLevel) + '22'"
+            [style.color]="getLevelColor(note.academicLevel)">
+        {{ note.academicLevel }}
+      </span>
+
+      <div class="note-title">{{ note.title }}</div>
+      <div class="note-subject">📖 {{ note.subject }}</div>
+
+      <div class="note-footer">
+        <div class="note-actions">
+          <button class="download-btn" (click)="download(note)">
+            <mat-icon>download</mat-icon> Download
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteNote(note.noteId)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <ng-template #noNotes>
+    <div class="no-notes">
+      📭 You haven't uploaded any notes yet.
+      <a routerLink="/upload-note">Upload your first note!</a>
+    </div>
+  </ng-template>
+
+</div>

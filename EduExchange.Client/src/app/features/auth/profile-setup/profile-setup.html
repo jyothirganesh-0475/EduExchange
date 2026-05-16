@@ -1,0 +1,63 @@
+<div class="setup-page">
+  <div class="setup-card">
+
+    <!-- Google Avatar -->
+    <div class="avatar-section">
+      <img *ngIf="profilePicture" [src]="profilePicture"
+           alt="profile" class="google-avatar" />
+      <div *ngIf="!profilePicture" class="avatar-placeholder">
+        {{ username.charAt(0).toUpperCase() }}
+      </div>
+      <div class="welcome-text">
+        <h2>Welcome, {{ username }}! 👋</h2>
+        <p>{{ email }}</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="setup-intro">
+      <h3>Complete your profile</h3>
+      <p>Help others know who you are on EduExchange</p>
+    </div>
+
+    <!-- Full Name -->
+    <mat-form-field appearance="outline" class="edu-field full-width">
+      <mat-label>Full Name</mat-label>
+      <input matInput [(ngModel)]="profile.fullName"
+             placeholder="e.g. Rahul Kumar" />
+      <mat-icon matSuffix>badge</mat-icon>
+    </mat-form-field>
+
+    <!-- Education Level -->
+    <mat-form-field appearance="outline" class="edu-field full-width">
+      <mat-label>Education Level *</mat-label>
+      <mat-select [(ngModel)]="profile.educationLevel">
+        <mat-option value="">— Select —</mat-option>
+        <mat-option *ngFor="let l of levels" [value]="l">{{ l }}</mat-option>
+      </mat-select>
+      <mat-icon matSuffix>school</mat-icon>
+    </mat-form-field>
+
+    <!-- City -->
+    <mat-form-field appearance="outline" class="edu-field full-width">
+      <mat-label>City</mat-label>
+      <input matInput [(ngModel)]="profile.city"
+             placeholder="e.g. Vijayawada" />
+      <mat-icon matSuffix>location_on</mat-icon>
+    </mat-form-field>
+
+    <!-- Actions -->
+    <div class="setup-actions">
+      <button mat-raised-button class="save-btn"
+              (click)="save()" [disabled]="submitting">
+        <mat-icon>check_circle</mat-icon>
+        {{ submitting ? 'Saving...' : 'Save & Continue' }}
+      </button>
+      <button mat-stroked-button class="skip-btn" (click)="skip()">
+        Skip for now
+      </button>
+    </div>
+
+  </div>
+</div>

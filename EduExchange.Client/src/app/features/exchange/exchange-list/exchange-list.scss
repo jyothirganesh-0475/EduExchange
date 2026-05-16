@@ -1,0 +1,379 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap');
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 32px;
+  animation: fadeInDown 0.6s ease;
+
+  h1 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 42px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+
+  p { color: #636e72; font-size: 16px; font-family: 'Poppins', sans-serif; }
+}
+
+.section {
+  margin-bottom: 40px;
+  animation: fadeInUp 0.6s ease both;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  background: white;
+  padding: 16px 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(108,99,255,0.08);
+
+  .section-icon { font-size: 32px; }
+
+  h2 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: #1a1a2e;
+    margin: 0;
+  }
+
+  p { color: #636e72; font-size: 13px; margin: 0; font-family: 'Poppins', sans-serif; }
+
+  .count-badge {
+    margin-left: auto;
+    background: linear-gradient(135deg, #6c63ff, #a855f7);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.request-card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 30px rgba(108,99,255,0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+
+  &.sent::before     { background: linear-gradient(135deg, #6c63ff, #a855f7); }
+  &.received::before { background: linear-gradient(135deg, #f093fb, #f5576c); }
+  &.all::before      { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(108,99,255,0.15);
+  }
+
+  .request-id {
+    font-size: 11px;
+    color: #636e72;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .book-name {
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: #1a1a2e;
+    margin-bottom: 4px;
+  }
+
+  .requester {
+    color: #636e72;
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+
+  .message-box {
+    background: #f8f9ff;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #636e72;
+    margin-bottom: 16px;
+    border-left: 3px solid #6c63ff;
+    line-height: 1.5;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 8px;
+
+    button {
+      border-radius: 10px !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      font-family: 'Poppins', sans-serif !important;
+    }
+  }
+}
+
+// ── TYPE PILL — distinguishes book vs item requests ───────────────────────────
+.type-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 8px;
+
+  &.book-pill {
+    background: #ede9fe;
+    color: #6c63ff;
+  }
+
+  &.item-pill {
+    background: #fce7f3;
+    color: #ff6584;
+  }
+}
+
+// ── STATUS BADGES ─────────────────────────────────────────────────────────────
+.badge-pending {
+  background: linear-gradient(135deg, #f9ca24, #f0932b);
+  color: white;
+  padding: 4px 14px; border-radius: 20px;
+  font-size: 12px; font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+}
+
+.badge-approved {
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
+  color: #1a1a2e;
+  padding: 4px 14px; border-radius: 20px;
+  font-size: 12px; font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+}
+
+.badge-rejected {
+  background: linear-gradient(135deg, #ff6584, #ff4757);
+  color: white;
+  padding: 4px 14px; border-radius: 20px;
+  font-size: 12px; font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+}
+
+.badge-completed {
+  background: linear-gradient(135deg, #6c63ff, #a855f7);
+  color: white;
+  padding: 4px 14px; border-radius: 20px;
+  font-size: 12px; font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+}
+
+// ── EMPTY STATE ───────────────────────────────────────────────────────────────
+.no-data {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  color: #636e72;
+  font-size: 15px;
+  grid-column: 1/-1;
+  box-shadow: 0 4px 20px rgba(108,99,255,0.05);
+  font-family: 'Poppins', sans-serif;
+}
+
+// ── RESPONSIVE ────────────────────────────────────────────────────────────────
+@media (max-width: 600px) {
+  .container { padding: 16px 12px; }
+  .header-section h1 { font-size: 28px; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .section-title { flex-wrap: wrap; }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// ── LOADING SPINNER ───────────────────────────────────────────────────────────
+.loading-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  gap: 16px;
+
+  p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #636e72;
+    margin: 0;
+  }
+}
+
+.spinner-ring {
+  width: 52px;
+  height: 52px;
+  border: 4px solid rgba(108, 99, 255, 0.15);
+  border-top-color: #6c63ff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// ── TAB BAR ───────────────────────────────────────────────────────────────────
+.tab-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  background: white;
+  padding: 8px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(108,99,255,0.08);
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #636e72;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  .tab-icon { font-size: 16px; }
+
+  .tab-count {
+    background: #f0f2ff;
+    color: #6c63ff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 10px;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  &:hover:not(.active) {
+    background: #f8f9ff;
+    color: #6c63ff;
+  }
+
+  &.active {
+    background: linear-gradient(135deg, #6c63ff, #a855f7);
+    color: white;
+    box-shadow: 0 4px 12px rgba(108,99,255,0.3);
+
+    .tab-count {
+      background: rgba(255,255,255,0.25);
+      color: white;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .tab-btn { font-size: 12px; padding: 8px 10px; }
+}
+
+// ── SECTION HEADER ────────────────────────────────────────────────────────────
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  background: white;
+  padding: 16px 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(108,99,255,0.08);
+
+  .section-icon { font-size: 28px; }
+
+  h2 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: #1a1a2e;
+    margin: 0;
+  }
+
+  p { color: #636e72; font-size: 12px; margin: 0; font-family: 'Poppins', sans-serif; }
+
+  .count-badge {
+    margin-left: auto;
+    background: linear-gradient(135deg, #6c63ff, #a855f7);
+    color: white;
+    min-width: 28px;
+    height: 28px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 0 8px;
+    font-family: 'Poppins', sans-serif;
+  }
+}
+
+.section-gap {
+  margin-top: 32px;
+}

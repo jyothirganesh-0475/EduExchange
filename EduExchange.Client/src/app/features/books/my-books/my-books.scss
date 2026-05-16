@@ -1,0 +1,247 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  animation: fadeInDown 0.6s ease;
+
+  .title-group {
+    h1 {
+      font-family: 'Nunito', sans-serif;
+      font-size: 36px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #6c63ff, #ff6584);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    p { color: #636e72; font-size: 14px; }
+  }
+
+  .add-btn {
+    background: linear-gradient(135deg, #6c63ff, #a855f7) !important;
+    color: white !important;
+    border-radius: 14px !important;
+    padding: 8px 20px !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 15px rgba(108,99,255,0.3);
+    transition: all 0.3s ease !important;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(108,99,255,0.4) !important;
+    }
+  }
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  animation: fadeInUp 0.6s ease 0.1s both;
+}
+
+.book-card {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 8px 30px rgba(108,99,255,0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+  }
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(108,99,255,0.15);
+  }
+
+  .book-emoji { font-size: 36px; margin-bottom: 12px; display: block; }
+
+  .book-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: #1a1a2e;
+    margin-bottom: 4px;
+  }
+
+  .book-author { color: #636e72; font-size: 14px; margin-bottom: 16px; }
+
+  .book-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .tag {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+
+    &.level { background: #ede9fe; color: #6c63ff; }
+    &.condition { background: #fce7f3; color: #ff6584; }
+  }
+
+  .book-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .actions { display: flex; gap: 8px; }
+}
+
+.badge-green {
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
+  color: #1a1a2e;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge-red {
+  background: linear-gradient(135deg, #ff6584, #ff4757);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.no-books {
+  text-align: center;
+  padding: 60px;
+  color: #636e72;
+  font-size: 18px;
+  grid-column: 1/-1;
+}
+.action-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.upload-btn {
+  background: linear-gradient(135deg, #43e97b, #38f9d7) !important;
+  color: #1a1a2e !important;
+  border-radius: 14px !important;
+  font-weight: 700 !important;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 32px 0 16px;
+  padding: 16px 24px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(108,99,255,0.08);
+
+  span:first-child { font-size: 32px; }
+
+  h2 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: #1a1a2e;
+    margin: 0;
+  }
+
+  p { color: #636e72; font-size: 13px; margin: 0; }
+}
+
+.notes-header h2 {
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.note-card {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 8px 30px rgba(67,233,123,0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #43e97b, #38f9d7);
+  }
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(67,233,123,0.15);
+  }
+
+  .note-emoji { font-size: 36px; margin-bottom: 12px; display: block; }
+  .note-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    color: #1a1a2e;
+    margin-bottom: 4px;
+  }
+  .note-subject { color: #636e72; font-size: 13px; margin-bottom: 10px; }
+  .note-tag {
+    background: #e8fff0;
+    color: #00b894;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+  .note-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.no-data {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  color: #636e72;
+  font-size: 15px;
+  grid-column: 1/-1;
+}
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

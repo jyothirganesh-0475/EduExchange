@@ -1,0 +1,59 @@
+<div class="container">
+  <mat-card>
+
+    <mat-card-header>
+      <mat-card-title>📤 Upload Handwritten Notes</mat-card-title>
+      <mat-card-subtitle>Share your notes as PDF with other students</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <mat-form-field appearance="outline" class="edu-field search-field">
+        <mat-label>Notes Title *</mat-label>
+        <input matInput [(ngModel)]="note.title" placeholder="e.g. VLSI Unit 3 Notes" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="edu-field search-field">
+        <mat-label>Subject</mat-label>
+        <input matInput [(ngModel)]="note.subject" placeholder="e.g. VLSI Design" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="edu-field search-field">
+        <mat-label>Academic Level</mat-label>
+        <mat-select [(ngModel)]="note.academicLevel">
+          <mat-option *ngFor="let level of levels" [value]="level">
+            {{ level }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="edu-field search-field">
+        <mat-label>Category</mat-label>
+        <mat-select [(ngModel)]="note.categoryId">
+          <mat-option *ngFor="let cat of categories" [value]="cat.categoryId">
+            {{ cat.categoryName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="file-upload">
+        <label>📎 Select PDF File *</label>
+        <input type="file" accept=".pdf" (change)="onFileSelected($event)" />
+        <p *ngIf="selectedFile" class="file-name">
+          ✅ {{ selectedFile.name }}
+        </p>
+      </div>
+
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="upload()">
+        <mat-icon>cloud_upload</mat-icon> Upload Notes
+      </button>
+      <button mat-button routerLink="/notes">
+        <mat-icon>arrow_back</mat-icon> Cancel
+      </button>
+    </mat-card-actions>
+
+  </mat-card>
+</div>

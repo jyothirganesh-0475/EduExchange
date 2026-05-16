@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap');
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+mat-card {
+  background: white !important;
+  border-radius: 24px !important;
+  padding: 36px !important;
+  box-shadow: 0 8px 40px rgba(67, 233, 123, 0.12) !important;
+  border: 1px solid rgba(67, 233, 123, 0.1) !important;
+  animation: fadeInUp 0.5s ease;
+
+  mat-card-header {
+    margin-bottom: 28px;
+    padding: 0 !important;
+
+    mat-card-title {
+      font-family: 'Nunito', sans-serif !important;
+      font-size: 26px !important;
+      font-weight: 900 !important;
+      background: linear-gradient(135deg, #43e97b, #38f9d7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px !important;
+    }
+
+    mat-card-subtitle {
+      color: #636e72 !important;
+      font-size: 14px !important;
+      font-family: 'Poppins', sans-serif !important;
+    }
+  }
+
+  mat-card-content { padding: 0 !important; }
+
+  mat-card-actions {
+    padding: 16px 0 0 0 !important;
+    display: flex !important;
+    gap: 12px !important;
+  }
+}
+
+// ── FORM FIELDS ───────────────────────────────────────────────────────────────
+.full-width {
+  width: 100%;
+  margin-bottom: 8px;
+
+
+}
+
+// ── FILE UPLOAD ───────────────────────────────────────────────────────────────
+.file-upload {
+  margin: 8px 0 20px 0;
+  background: #f0fff7;
+  border: 2px dashed rgba(67, 233, 123, 0.4);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #43e97b;
+    background: #e8fff0;
+    box-shadow: 0 0 0 4px rgba(67, 233, 123, 0.1);
+  }
+
+  label {
+    display: block;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: #00b894;
+    margin-bottom: 12px;
+    cursor: pointer;
+  }
+
+  input[type="file"] {
+    display: block;
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    color: #636e72;
+    cursor: pointer;
+
+    &::file-selector-button {
+      background: linear-gradient(135deg, #43e97b, #38f9d7);
+      color: #1a1a2e;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      margin-right: 12px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        opacity: 0.85;
+      }
+    }
+  }
+
+  .file-name {
+    margin-top: 12px;
+    color: #00b894;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    background: #d1fae5;
+    padding: 8px 16px;
+    border-radius: 10px;
+    display: inline-block;
+  }
+}
+
+// ── BUTTONS ───────────────────────────────────────────────────────────────────
+button[mat-raised-button][color="primary"] {
+  height: 48px !important;
+  padding: 0 28px !important;
+  background: linear-gradient(135deg, #43e97b, #38f9d7) !important;
+  color: #1a1a2e !important;
+  border-radius: 14px !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  font-family: 'Poppins', sans-serif !important;
+  box-shadow: 0 6px 20px rgba(67, 233, 123, 0.35) !important;
+  transition: all 0.3s ease !important;
+
+  mat-icon { margin-right: 6px; }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(67, 233, 123, 0.45) !important;
+  }
+}
+
+button[mat-button] {
+  height: 48px !important;
+  padding: 0 24px !important;
+  border-radius: 14px !important;
+  font-size: 15px !important;
+  font-family: 'Poppins', sans-serif !important;
+  color: #636e72 !important;
+  border: 1.5px solid rgba(67, 233, 123, 0.2) !important;
+  transition: all 0.3s ease !important;
+
+  mat-icon { margin-right: 6px; }
+
+  &:hover {
+    background: #f0fff7 !important;
+    color: #00b894 !important;
+    border-color: #43e97b !important;
+  }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

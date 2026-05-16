@@ -1,0 +1,218 @@
+<div class="container">
+
+  <!-- Header -->
+  <div class="header-section">
+    <h1>🔄 Exchange Requests</h1>
+    <p>Track your book and item exchange activity</p>
+  </div>
+
+  <!-- Tab bar -->
+  <div class="tab-bar">
+    <button class="tab-btn" [class.active]="activeTab === 'all'" (click)="activeTab = 'all'">
+      <span class="tab-icon">📋</span> All Requests
+      <span class="tab-count">{{ allRequests.length }}</span>
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'sent'" (click)="activeTab = 'sent'">
+      <span class="tab-icon">📤</span> My Requests
+      <span class="tab-count">{{ sentRequests.length }}</span>
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'received'" (click)="activeTab = 'received'">
+      <span class="tab-icon">📥</span> Received
+      <span class="tab-count">{{ receivedRequests.length }}</span>
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-wrap" *ngIf="isLoading">
+    <div class="spinner-ring"></div>
+    <p>Loading requests...</p>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+
+    <!-- ══ MY REQUESTS TAB ══ -->
+    <ng-container *ngIf="activeTab === 'sent'">
+
+      <!-- Book Requests -->
+      <div class="section-header">
+        <span class="section-icon">📚</span>
+        <div><h2>Book Requests</h2><p>Books you have requested from others</p></div>
+        <span class="count-badge">{{ bookCount(sentRequests) }}</span>
+      </div>
+      <div class="cards-grid">
+        <ng-container *ngFor="let r of sentRequests">
+          <div class="request-card sent" *ngIf="r.type === 'book'">
+            <div class="type-pill book-pill">📚 Book Request</div>
+            <div class="request-id">Request #{{ r.id }}</div>
+            <div class="book-name">{{ r.title }}</div>
+            <div class="message-box" *ngIf="r.message">💬 {{ r.message }}</div>
+            <div class="card-footer">
+              <span [class]="getBadgeClass(r.status)">{{ r.status }}</span>
+            </div>
+          </div>
+        </ng-container>
+        <div class="no-data" *ngIf="bookCount(sentRequests) === 0">
+          📭 No book requests sent yet.
+        </div>
+      </div>
+
+      <!-- Item Requests -->
+      <div class="section-header section-gap">
+        <span class="section-icon">🎒</span>
+        <div><h2>Item Requests</h2><p>Items you have requested from others</p></div>
+        <span class="count-badge">{{ itemCount(sentRequests) }}</span>
+      </div>
+      <div class="cards-grid">
+        <ng-container *ngFor="let r of sentRequests">
+          <div class="request-card sent" *ngIf="r.type === 'item'">
+            <div class="type-pill item-pill">🎒 Item Request</div>
+            <div class="request-id">Request #{{ r.id }}</div>
+            <div class="book-name">{{ r.title }}</div>
+            <div class="message-box" *ngIf="r.message">💬 {{ r.message }}</div>
+            <div class="card-footer">
+              <span [class]="getBadgeClass(r.status)">{{ r.status }}</span>
+            </div>
+          </div>
+        </ng-container>
+        <div class="no-data" *ngIf="itemCount(sentRequests) === 0">
+          📭 No item requests sent yet.
+        </div>
+      </div>
+
+    </ng-container>
+
+    <!-- ══ RECEIVED REQUESTS TAB ══ -->
+    <ng-container *ngIf="activeTab === 'received'">
+
+      <!-- Book Requests -->
+      <div class="section-header">
+        <span class="section-icon">📚</span>
+        <div><h2>Book Requests</h2><p>Others requesting your listed books</p></div>
+        <span class="count-badge">{{ bookCount(receivedRequests) }}</span>
+      </div>
+      <div class="cards-grid">
+        <ng-container *ngFor="let r of receivedRequests">
+          <div class="request-card received" *ngIf="r.type === 'book'">
+            <div class="type-pill book-pill">📚 Book Request</div>
+            <div class="request-id">Request #{{ r.id }}</div>
+            <div class="book-name">{{ r.title }}</div>
+            <div class="requester" *ngIf="r.requester">👤 {{ r.requester }}</div>
+            <div class="message-box" *ngIf="r.message">💬 {{ r.message }}</div>
+            <div class="card-footer">
+              <span [class]="getBadgeClass(r.status)">{{ r.status }}</span>
+              <div class="actions" *ngIf="r.status === 'Pending'">
+                <button mat-raised-button color="primary" (click)="updateStatus(r, 'Approved')">
+                  <mat-icon>check</mat-icon> Approve
+                </button>
+                <button mat-raised-button color="warn" (click)="updateStatus(r, 'Rejected')">
+                  <mat-icon>close</mat-icon> Reject
+                </button>
+              </div>
+              <div class="actions" *ngIf="r.status === 'Approved'">
+                <button mat-raised-button color="accent" (click)="updateStatus(r, 'Completed')">
+                  <mat-icon>done_all</mat-icon> Complete
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <div class="no-data" *ngIf="bookCount(receivedRequests) === 0">
+          📭 No book requests received yet.
+        </div>
+      </div>
+
+      <!-- Item Requests -->
+      <div class="section-header section-gap">
+        <span class="section-icon">🎒</span>
+        <div><h2>Item Requests</h2><p>Others requesting your listed items</p></div>
+        <span class="count-badge">{{ itemCount(receivedRequests) }}</span>
+      </div>
+      <div class="cards-grid">
+        <ng-container *ngFor="let r of receivedRequests">
+          <div class="request-card received" *ngIf="r.type === 'item'">
+            <div class="type-pill item-pill">🎒 Item Request</div>
+            <div class="request-id">Request #{{ r.id }}</div>
+            <div class="book-name">{{ r.title }}</div>
+            <div class="requester" *ngIf="r.requester">👤 {{ r.requester }}</div>
+            <div class="message-box" *ngIf="r.message">💬 {{ r.message }}</div>
+            <div class="card-footer">
+              <span [class]="getBadgeClass(r.status)">{{ r.status }}</span>
+              <div class="actions" *ngIf="r.status === 'Pending'">
+                <button mat-raised-button color="primary" (click)="updateStatus(r, 'Approved')">
+                  <mat-icon>check</mat-icon> Approve
+                </button>
+                <button mat-raised-button color="warn" (click)="updateStatus(r, 'Rejected')">
+                  <mat-icon>close</mat-icon> Reject
+                </button>
+              </div>
+              <div class="actions" *ngIf="r.status === 'Approved'">
+                <button mat-raised-button color="accent" (click)="updateStatus(r, 'Completed')">
+                  <mat-icon>done_all</mat-icon> Complete
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <div class="no-data" *ngIf="itemCount(receivedRequests) === 0">
+          📭 No item requests received yet.
+        </div>
+      </div>
+
+    </ng-container>
+
+    <!-- ══ ALL REQUESTS TAB ══ -->
+    <ng-container *ngIf="activeTab === 'all'">
+
+      <!-- Book Requests -->
+      <div class="section-header">
+        <span class="section-icon">📚</span>
+        <div><h2>Book Requests</h2><p>All book exchange activity</p></div>
+        <span class="count-badge">{{ bookCount(allRequests) }}</span>
+      </div>
+      <div class="cards-grid">
+        <ng-container *ngFor="let r of allRequests">
+          <div class="request-card all" *ngIf="r.type === 'book'">
+            <div class="type-pill book-pill">📚 Book Request</div>
+            <div class="request-id">Request #{{ r.id }}</div>
+            <div class="book-name">{{ r.title }}</div>
+            <div class="requester" *ngIf="r.requester">👤 {{ r.requester }}</div>
+            <div class="message-box" *ngIf="r.message">💬 {{ r.message }}</div>
+            <div class="card-footer">
+              <span [class]="getBadgeClass(r.status)">{{ r.status }}</span>
+            </div>
+          </div>
+        </ng-container>
+        <div class="no-data" *ngIf="bookCount(allRequests) === 0">
+          📭 No book exchanges yet.
+        </div>
+      </div>
+
+      <!-- Item Requests -->
+      <div class="section-header section-gap">
+        <span class="section-icon">🎒</span>
+        <div><h2>Item Requests</h2><p>All item exchange activity</p></div>
+        <span class="count-badge">{{ itemCount(allRequests) }}</span>
+      </div>
+      <div class="cards-grid">
+        <ng-container *ngFor="let r of allRequests">
+          <div class="request-card all" *ngIf="r.type === 'item'">
+            <div class="type-pill item-pill">🎒 Item Request</div>
+            <div class="request-id">Request #{{ r.id }}</div>
+            <div class="book-name">{{ r.title }}</div>
+            <div class="requester" *ngIf="r.requester">👤 {{ r.requester }}</div>
+            <div class="message-box" *ngIf="r.message">💬 {{ r.message }}</div>
+            <div class="card-footer">
+              <span [class]="getBadgeClass(r.status)">{{ r.status }}</span>
+            </div>
+          </div>
+        </ng-container>
+        <div class="no-data" *ngIf="itemCount(allRequests) === 0">
+          📭 No item exchanges yet.
+        </div>
+      </div>
+
+    </ng-container>
+
+  </ng-container>
+
+</div>

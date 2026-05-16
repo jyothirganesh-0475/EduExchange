@@ -1,0 +1,62 @@
+<app-assets-tabs activeTab="items"></app-assets-tabs>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header-section">
+    <div class="title-group">
+      <h1>🎒 My Items</h1>
+      <p>Manage your listed items</p>
+    </div>
+    <a class="add-btn" routerLink="/add-item">
+      <mat-icon>add</mat-icon> List New Item
+    </a>
+  </div>
+
+  <!-- Items Grid -->
+  <div class="items-grid" *ngIf="myItems.length > 0; else noMyItems">
+    <div class="item-card" *ngFor="let item of myItems">
+
+      <div class="item-cover">
+        <img *ngIf="item.imagePath"
+             [src]="getImageUrl(item.imagePath)"
+             (error)="onImgError($event)"
+             alt="{{ item.name }}" />
+        <div class="cover-placeholder" *ngIf="!item.imagePath">
+          <span>{{ getTypeIcon(item.itemType) }}</span>
+        </div>
+      </div>
+
+      <div class="item-body">
+        <span class="type-tag">{{ item.itemType }}</span>
+        <div class="item-name">{{ item.name }}</div>
+        <div class="item-desc" *ngIf="item.description">{{ item.description }}</div>
+
+        <div class="item-footer">
+          <span [class]="item.status === 'Available' ? 'badge-green' : 'badge-red'">
+            {{ item.status }}
+          </span>
+          <div class="actions">
+            <button mat-icon-button [routerLink]="['/edit-item', item.itemId]" matTooltip="Edit">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteItem(item.itemId)" matTooltip="Delete">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <ng-template #noMyItems>
+    <div class="no-data">
+      <p>📦 You haven't listed any items yet.</p>
+      <a routerLink="/add-item">
+        <mat-icon>add</mat-icon> List Your First Item
+      </a>
+    </div>
+  </ng-template>
+
+</div>

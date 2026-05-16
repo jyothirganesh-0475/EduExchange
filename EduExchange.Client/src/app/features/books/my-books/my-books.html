@@ -1,0 +1,46 @@
+<app-assets-tabs activeTab="books"></app-assets-tabs>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header-section">
+    <div class="title-group">
+      <h1>📚 My Books</h1>
+      <p>{{ books.length }} book{{ books.length !== 1 ? 's' : '' }} listed</p>
+    </div>
+    <button mat-raised-button class="add-btn" routerLink="/add-book">
+      <mat-icon>add</mat-icon> Add Book
+    </button>
+  </div>
+
+  <!-- Books Grid -->
+  <div class="books-grid" *ngIf="books.length > 0; else noBooks">
+    <div class="book-card" *ngFor="let book of books">
+      <span class="book-emoji">📚</span>
+      <div class="book-title">{{ book.title }}</div>
+      <div class="book-author">by {{ book.author }}</div>
+      <div class="book-tags">
+        <span class="tag level">{{ book.academicLevel }}</span>
+        <span class="tag condition">{{ book.condition }}</span>
+      </div>
+      <div class="book-footer">
+        <span [class]="book.status === 'Available' ? 'badge-green' : 'badge-red'">
+          {{ book.status }}
+        </span>
+        <div class="actions">
+          <button mat-icon-button color="primary" [routerLink]="['/edit-book', book.bookId]">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteBook(book.bookId)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noBooks>
+    <div class="no-data">📭 No books listed yet. <a routerLink="/add-book">Add your first book!</a></div>
+  </ng-template>
+
+</div>

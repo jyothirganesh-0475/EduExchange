@@ -1,0 +1,343 @@
+<mat-toolbar>
+  <a class="brand" routerLink="/books">
+    <span class="brand-icon">📚</span>
+    <span class="brand-name">EduExchange</span>
+  </a>
+
+  <span class="spacer"></span>
+
+  <ng-container *ngIf="authService.isLoggedIn()">
+
+    <!-- Desktop nav links -->
+    <div class="nav-links">
+
+      <button mat-button class="nav-btn" routerLink="/discover">
+        <mat-icon>search</mat-icon> Discover
+      </button>
+
+      <!-- Exchanges dropdown -->
+      <div class="assets-wrap" >
+        <button mat-button class="nav-btn assets-btn" (click)="toggleExchanges($event)">
+          <mat-icon>swap_horiz</mat-icon> Exchanges
+          <mat-icon class="arrow-icon" [class.open]="exchangesOpen">expand_more</mat-icon>
+        </button>
+        <div class="assets-dropdown" *ngIf="exchangesOpen" @slideDown>
+          <button class="asset-item" (click)="navigateExchange('all')">
+            <div class="asset-icon">📋</div>
+            <div class="asset-body">
+              <div class="asset-name">All Requests</div>
+              <div class="asset-desc">Complete exchange history</div>
+            </div>
+            <mat-icon class="asset-arrow">chevron_right</mat-icon>
+          </button>
+          <button class="asset-item" (click)="navigateExchange('sent')">
+            <div class="asset-icon">📤</div>
+            <div class="asset-body">
+              <div class="asset-name">My Requests</div>
+              <div class="asset-desc">Requests you sent</div>
+            </div>
+            <mat-icon class="asset-arrow">chevron_right</mat-icon>
+          </button>
+          <button class="asset-item" (click)="navigateExchange('received')">
+            <div class="asset-icon">📥</div>
+            <div class="asset-body">
+              <div class="asset-name">Received Requests</div>
+              <div class="asset-desc">Requests on your listings</div>
+            </div>
+            <mat-icon class="asset-arrow">chevron_right</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <button mat-button class="nav-btn" routerLink="/books-search">
+    <mat-icon>menu_book</mat-icon> Books
+  </button>
+
+      <button mat-button class="nav-btn" routerLink="/notes">
+        <mat-icon>description</mat-icon> Notes
+      </button>
+
+      <button mat-button class="nav-btn" routerLink="/items">
+        <mat-icon>inventory_2</mat-icon> Items
+      </button>
+
+      <!-- My Assets dropdown -->
+      <div class="assets-wrap" >
+        <button mat-button class="nav-btn assets-btn" (click)="toggleAssets($event)">
+          <mat-icon>folder_special</mat-icon> My Assets
+          <mat-icon class="arrow-icon" [class.open]="assetsOpen">expand_more</mat-icon>
+        </button>
+
+        <!-- Assets dropdown menu -->
+        <div class="assets-dropdown" *ngIf="assetsOpen" @slideDown>
+          <button class="asset-item" (click)="navigateAsset('/my-books')">
+            <div class="asset-icon">📚</div>
+            <div class="asset-body">
+              <div class="asset-name">My Books</div>
+              <div class="asset-desc">Your listed books</div>
+            </div>
+            <mat-icon class="asset-arrow">chevron_right</mat-icon>
+          </button>
+          <button class="asset-item" (click)="navigateAsset('/my-notes')">
+            <div class="asset-icon">📝</div>
+            <div class="asset-body">
+              <div class="asset-name">My Notes</div>
+              <div class="asset-desc">Notes you uploaded</div>
+            </div>
+            <mat-icon class="asset-arrow">chevron_right</mat-icon>
+          </button>
+          <button class="asset-item" (click)="navigateAsset('/my-items')">
+            <div class="asset-icon">🎒</div>
+            <div class="asset-body">
+              <div class="asset-name">My Items</div>
+              <div class="asset-desc">Your listed items</div>
+            </div>
+            <mat-icon class="asset-arrow">chevron_right</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Notification Bell -->
+      <div class="notif-wrap" >
+        <button class="bell-btn" (click)="toggleNotif($event)">
+          <mat-icon>notifications</mat-icon>
+          <span class="notif-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+        </button>
+
+        <div class="notif-dropdown" *ngIf="notifOpen" @slideDown >
+          <div class="notif-header">
+            <span>🔔 Notifications</span>
+            <span class="notif-count" *ngIf="notifications.length > 0">{{ notifications.length }}</span>
+          </div>
+          <div class="notif-empty" *ngIf="notifications.length === 0">
+            No new notifications
+          </div>
+          <div class="notif-item" *ngFor="let n of notifications" [class.unread]="!n.isRead"
+               (click)="handleNotifClick($event, n)">
+            <div class="notif-icon">{{ n.type === 'exchange' ? '📚' : '🎒' }}</div>
+            <div class="notif-body">
+              <div class="notif-msg">{{ n.message }}</div>
+              <div class="notif-time">{{ timeAgo(n.createdAt) }}</div>
+            </div>
+            <div class="notif-arrow">›</div>
+          </div>
+          <div class="notif-footer" *ngIf="notifications.length > 0" (click)="goToExchange($event)">
+            View all exchanges →
+          </div>
+        </div>
+      </div>
+
+      <!-- User profile button -->
+      <button mat-button class="user-btn" (click)="toggleProfile($event)">
+        <img *ngIf="profilePicture"
+             [src]="profilePicture"
+             (error)="onProfileImgError($event)"
+             class="avatar-img" alt="profile" />
+        <span *ngIf="!profilePicture" class="avatar-initials">{{ getInitials() }}</span>
+        {{ authService.getUsername() }}
+        <mat-icon class="arrow-icon" [class.open]="profileOpen">expand_more</mat-icon>
+      </button>
+
+    </div>
+
+    <!-- Hamburger button (mobile only) -->
+    <button class="hamburger-btn" (click)="toggleMenu($event)">
+      <span class="bar" [class.open]="menuOpen"></span>
+      <span class="bar" [class.open]="menuOpen"></span>
+      <span class="bar" [class.open]="menuOpen"></span>
+    </button>
+
+  </ng-container>
+</mat-toolbar>
+
+<!-- Mobile menu overlay -->
+<div class="menu-overlay" *ngIf="menuOpen" (click)="closeMenu()"></div>
+
+<!-- Mobile drawer -->
+<div class="mobile-drawer" [class.open]="menuOpen">
+  <div class="drawer-header">
+    <div class="avatar">
+      <img *ngIf="profilePicture"
+           [src]="profilePicture"
+           (error)="onProfileImgError($event)"
+           class="avatar-img" alt="profile" />
+      <span *ngIf="!profilePicture">{{ getInitials() }}</span>
+    </div>
+    <div class="profile-meta">
+      <div class="profile-username">{{ authService.getUsername() }}</div>
+      <div class="profile-email">{{ authService.getEmail() }}</div>
+    </div>
+    <button class="drawer-close-btn" (click)="closeMenu()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="drawer-nav-body" style="padding: 20px 16px;">
+    <div class="drawer-divider" style="margin-top:4px"></div>
+
+    <a class="drawer-link" routerLink="/books" (click)="closeMenu()">
+      <mat-icon>search</mat-icon> Discover
+    </a>
+    <div class="drawer-section-label">Exchanges</div>
+    <a class="drawer-link drawer-sub" routerLink="/exchange" (click)="closeMenu()">
+      <span class="drawer-sub-icon">📋</span> All Requests
+    </a>
+    <a class="drawer-link drawer-sub" [routerLink]="['/exchange']" [queryParams]="{tab: 'sent'}" (click)="closeMenu()">
+      <span class="drawer-sub-icon">📤</span> My Requests
+    </a>
+    <a class="drawer-link drawer-sub" [routerLink]="['/exchange']" [queryParams]="{tab: 'received'}" (click)="closeMenu()">
+      <span class="drawer-sub-icon">📥</span> Received Requests
+    </a>
+    <a class="drawer-link" routerLink="/books-search" (click)="closeMenu()">
+      <mat-icon>menu_book</mat-icon> Books
+    </a>
+    <a class="drawer-link" routerLink="/notes" (click)="closeMenu()">
+      <mat-icon>description</mat-icon> Notes
+    </a>
+    <a class="drawer-link" routerLink="/items" (click)="closeMenu()">
+      <mat-icon>inventory_2</mat-icon> Items
+    </a>
+
+    <!-- My Assets section in drawer -->
+    <div class="drawer-section-label">My Assets</div>
+    <a class="drawer-link drawer-sub" routerLink="/my-books" (click)="closeMenu()">
+      <span class="drawer-sub-icon">📚</span> My Books
+    </a>
+    <a class="drawer-link drawer-sub" routerLink="/my-notes" (click)="closeMenu()">
+      <span class="drawer-sub-icon">📝</span> My Notes
+    </a>
+    <a class="drawer-link drawer-sub" routerLink="/my-items" (click)="closeMenu()">
+      <span class="drawer-sub-icon">🎒</span> My Items
+    </a>
+
+    <div class="drawer-divider"></div>
+
+    <!-- Notifications section in drawer -->
+    <div class="drawer-section-label">
+      Notifications
+      <span class="drawer-notif-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+    </div>
+
+    <!-- Empty state -->
+    <div class="drawer-notif-empty" *ngIf="notifications.length === 0">
+      <mat-icon>notifications_none</mat-icon>
+      <span>No new notifications</span>
+    </div>
+
+    <!-- Notification items -->
+    <div class="drawer-notif-item"
+         *ngFor="let n of notifications"
+         [class.unread]="!n.isRead"
+         (click)="closeMenu(); handleNotifClick($event, n)">
+      <span class="drawer-notif-icon">{{ n.type === 'exchange' ? '📚' : '🎒' }}</span>
+      <div class="drawer-notif-body">
+        <div class="drawer-notif-msg">{{ n.message }}</div>
+        <div class="drawer-notif-time">{{ timeAgo(n.createdAt) }}</div>
+      </div>
+    </div>
+
+    <div class="drawer-divider"></div>
+
+    <a class="drawer-link" (click)="closeMenu(); toggleProfile($event)">
+      <mat-icon>person</mat-icon> Profile
+    </a>
+    <a class="drawer-link logout" (click)="logout()">
+      <mat-icon>logout</mat-icon> Logout
+    </a>
+  </div>
+</div>
+
+<!-- Profile overlay -->
+<div class="profile-overlay" *ngIf="profileOpen" (click)="closeProfile()"></div>
+
+<!-- Profile Panel -->
+<div class="profile-panel" *ngIf="profileOpen" [@slideDown] (click)="onPanelClick($event)">
+  <div class="profile-header">
+    <div class="avatar">
+      <img *ngIf="profilePicture"
+           [src]="profilePicture"
+           (error)="onProfileImgError($event)"
+           class="avatar-img-large" alt="profile" />
+      <span *ngIf="!profilePicture">{{ getInitials() }}</span>
+    </div>
+    <div class="profile-meta">
+      <div class="profile-username">{{ authService.getUsername() }}</div>
+      <div class="profile-email">{{ authService.getEmail() }}</div>
+    </div>
+    <!-- Close button — especially useful on mobile where there's no overlay click affordance -->
+    <button class="profile-close-btn" (click)="closeProfile()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="profile-divider"></div>
+
+  <ng-container *ngIf="!editMode">
+    <div class="detail-row">
+      <mat-icon>badge</mat-icon>
+      <div>
+        <div class="detail-label">Full Name</div>
+        <div class="detail-value">{{ profile.fullName || '—' }}</div>
+      </div>
+    </div>
+    <div class="detail-row">
+      <mat-icon>school</mat-icon>
+      <div>
+        <div class="detail-label">Education Level</div>
+        <div class="detail-value">{{ profile.educationLevel || '—' }}</div>
+      </div>
+    </div>
+    <div class="detail-row">
+      <mat-icon>location_on</mat-icon>
+      <div>
+        <div class="detail-label">City</div>
+        <div class="detail-value">{{ profile.city || '—' }}</div>
+      </div>
+    </div>
+    <div class="detail-row">
+      <mat-icon>info</mat-icon>
+      <div>
+        <div class="detail-label">About</div>
+        <div class="detail-value">{{ profile.about || '—' }}</div>
+      </div>
+    </div>
+    <button class="edit-btn" (click)="startEdit()">
+      <mat-icon>edit</mat-icon> Edit Profile
+    </button>
+  </ng-container>
+
+  <ng-container *ngIf="editMode">
+    <div class="edit-field">
+      <label>Full Name</label>
+      <input [(ngModel)]="editData.fullName" placeholder="Your full name" />
+    </div>
+    <div class="edit-field">
+      <label>Education Level</label>
+      <select [(ngModel)]="editData.educationLevel">
+        <option value="">— Select —</option>
+        <option *ngFor="let l of levels" [value]="l">{{ l }}</option>
+      </select>
+    </div>
+    <div class="edit-field">
+      <label>City</label>
+      <input [(ngModel)]="editData.city" placeholder="e.g. Hyderabad" />
+    </div>
+    <div class="edit-field">
+      <label>About</label>
+      <textarea [(ngModel)]="editData.about"
+        placeholder="Tell something about yourself..." rows="3"></textarea>
+    </div>
+    <div class="edit-actions">
+      <button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+      <button class="save-btn" (click)="saveProfile()">
+        <mat-icon>check</mat-icon> Save
+      </button>
+    </div>
+  </ng-container>
+
+  <div class="profile-divider"></div>
+
+  <button class="logout-btn" (click)="logout()">
+    <mat-icon>logout</mat-icon> Logout
+  </button>
+</div>

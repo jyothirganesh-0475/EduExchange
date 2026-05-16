@@ -1,0 +1,93 @@
+<div class="items-page">
+
+  <!-- Header -->
+  <div class="header-section">
+    <h1>🎒 Student Items</h1>
+    <p>Browse calculators, drafters, geometric boxes and more from fellow students</p>
+    <a routerLink="/add-item" class="add-btn">
+      <mat-icon>add</mat-icon> List an Item
+    </a>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-card">
+    <mat-form-field appearance="outline" class="edu-field search-field">
+      <mat-label>🔍 Search items...</mat-label>
+      <input matInput [(ngModel)]="searchTerm" (input)="onFilter()" placeholder="e.g. casio, drafter" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="edu-field full-width">
+      <mat-label>📦 Item Type</mat-label>
+      <mat-select [(ngModel)]="selectedType" (selectionChange)="onFilter()">
+        <mat-option value="">All Types</mat-option>
+        <mat-option *ngFor="let t of itemTypes" [value]="t">{{ t }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button class="clear-btn" (click)="clearFilters()" *ngIf="searchTerm || selectedType">
+      <mat-icon>clear</mat-icon> Clear
+    </button>
+  </div>
+
+  <!-- Results bar -->
+  <div class="results-bar">
+    <span>{{ allItems.length }} item{{ allItems.length !== 1 ? 's' : '' }} available</span>
+    <span *ngIf="totalPages > 1">
+      Showing {{ startIndex + 1 }}–{{ endIndex > allItems.length ? allItems.length : endIndex }} of {{ allItems.length }}
+    </span>
+  </div>
+
+  <!-- Items Grid -->
+  <div class="items-grid" *ngIf="items.length > 0; else noItems">
+    <div class="item-card" *ngFor="let item of items" [routerLink]="['/items', item.itemId]">
+
+      <span class="item-type-badge">{{ getTypeIcon(item.itemType) }} {{ item.itemType }}</span>
+
+      <div class="item-title">{{ item.name }}</div>
+      <div class="item-desc" *ngIf="item.description">{{ item.description }}</div>
+
+      <div class="item-tags">
+        <span class="tag condition" *ngIf="item.condition">{{ item.condition }}</span>
+      </div>
+
+      <div class="item-footer">
+        <span class="listed-by">
+          <mat-icon>person</mat-icon>
+          {{ item.owner?.username || 'Unknown' }}
+        </span>
+        <span [class]="item.status === 'Available' ? 'badge-green' : 'badge-red'">
+          {{ item.status }}
+        </span>
+        <button class="arrow-btn" [routerLink]="['/items', item.itemId]">
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button class="page-btn nav-btn" (click)="prevPage()" [disabled]="page === 1">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <button class="page-btn"
+            *ngFor="let p of pages"
+            [class.active]="p === page"
+            (click)="goToPage(p)">
+      {{ p }}
+    </button>
+    <button class="page-btn nav-btn" (click)="nextPage()" [disabled]="page === totalPages">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+    <span class="page-info">Page {{ page }} of {{ totalPages }}</span>
+  </div>
+
+  <ng-template #noItems>
+    <div class="no-items-full">
+      📭 No items available yet. Be the first to list one!
+    </div>
+  </ng-template>
+
+</div>

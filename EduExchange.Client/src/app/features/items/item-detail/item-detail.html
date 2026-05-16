@@ -1,0 +1,125 @@
+<div class="container" *ngIf="item; else loading">
+  <div class="detail-card">
+
+    <!-- Image -->
+    <div class="item-image-section">
+      <img *ngIf="item.imagePath"
+           [src]="getImageUrl(item.imagePath)"
+           (error)="onImgError($event)"
+           alt="{{ item.name }}" class="item-image" />
+      <div class="image-placeholder" *ngIf="!item.imagePath">
+        <span>{{ getTypeIcon(item.itemType) }}</span>
+        <p>No image provided</p>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="card-header">
+      <div class="item-title">{{ item.name }}</div>
+      <div class="header-meta">
+        <span class="item-type">🏷️ {{ item.itemType }}</span>
+        <span class="status-chip" [class.available]="item.status === 'Available'">
+          {{ item.status }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="card-body">
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="label">Type</div>
+          <div class="value">{{ item.itemType }}</div>
+        </div>
+        <div class="info-item" *ngIf="item.condition">
+          <div class="label">Condition</div>
+          <div class="value">{{ item.condition }}</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Listed By</div>
+          <div class="value">{{ item.owner?.username }}</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Status</div>
+          <div class="value">{{ item.status }}</div>
+        </div>
+      </div>
+
+      <div class="description-box" *ngIf="item.description">
+        <div class="label">Description</div>
+        <div class="value">{{ item.description }}</div>
+      </div>
+    </div>
+
+    <!-- Contact Section (non-owner only) -->
+    <div class="contact-section" *ngIf="!isOwner && item.contactNumber">
+      <div class="contact-title">
+        <mat-icon>contact_phone</mat-icon> Contact Owner
+      </div>
+      <div class="contact-row">
+        <div class="contact-item">
+          <span class="contact-label">Mobile</span>
+          <span class="contact-number">{{ item.contactNumber }}</span>
+        </div>
+      </div>
+      <button class="whatsapp-btn" (click)="openWhatsApp()">
+        <mat-icon>chat</mat-icon> Chat on WhatsApp
+      </button>
+    </div>
+
+    <!-- Request Section -->
+    <div class="request-section" *ngIf="!isOwner && item.status === 'Available'">
+      <button mat-raised-button class="request-btn"
+              (click)="toggleRequestForm()" *ngIf="!showRequestForm">
+        <mat-icon>send</mat-icon> Send Request
+      </button>
+
+      <div class="request-form-box" *ngIf="showRequestForm">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Message to owner (optional)</mat-label>
+          <textarea matInput [(ngModel)]="requestMessage" rows="3"
+            placeholder="e.g. Hi, I need this for my engineering drawing lab...">
+          </textarea>
+        </mat-form-field>
+        <div class="form-actions">
+          <button class="send-btn" (click)="sendRequest()" [disabled]="requesting">
+            <mat-icon>send</mat-icon>
+            {{ requesting ? 'Sending...' : 'Send Request' }}
+          </button>
+          <button class="cancel-btn" (click)="toggleRequestForm()">
+            <mat-icon>close</mat-icon> Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Unavailable Banner -->
+    <div class="unavailable-banner" *ngIf="!isOwner && item.status !== 'Available'">
+      <mat-icon>info</mat-icon>
+      <span>This item is currently unavailable for exchange.</span>
+    </div>
+
+    <!-- Card Actions -->
+    <div class="card-actions">
+      <ng-container *ngIf="isOwner">
+        <button mat-raised-button class="edit-btn"
+                [routerLink]="['/edit-item', item.itemId]">
+          <mat-icon>edit</mat-icon> Edit Listing
+        </button>
+        <button mat-stroked-button class="back-btn" routerLink="/my-items">
+          <mat-icon>arrow_back</mat-icon> My Items
+        </button>
+      </ng-container>
+      <ng-container *ngIf="!isOwner">
+        <button mat-stroked-button class="back-btn" routerLink="/items">
+          <mat-icon>arrow_back</mat-icon> Back to Items
+        </button>
+      </ng-container>
+    </div>
+
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="loading-wrap">Loading item details...</div>
+</ng-template>

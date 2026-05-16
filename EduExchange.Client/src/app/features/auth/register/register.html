@@ -1,0 +1,68 @@
+<div class="auth-page">
+  <div class="auth-card">
+
+    <!-- Logo -->
+    <div class="auth-logo">
+      <span class="logo-icon">📚</span>
+      <span class="logo-text">EduExchange</span>
+    </div>
+
+    <h2 class="auth-title">Create Account</h2>
+    <p class="auth-sub">Join thousands of students exchanging knowledge</p>
+
+    <!-- ── Google Sign-Up Button ── -->
+    <div class="google-btn-wrapper">
+      <div id="google-signup-container"></div>
+      <div class="google-loading" *ngIf="googleLoading">
+        <span>Creating account with Google...</span>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider">
+      <span class="divider-line"></span>
+      <span class="divider-text">or register with email</span>
+      <span class="divider-line"></span>
+    </div>
+
+    <!-- Username -->
+    <mat-form-field appearance="outline" class="edu-field full-width">
+      <mat-label>Username</mat-label>
+      <input matInput [(ngModel)]="username" placeholder="e.g. rahul_ece" />
+      <mat-icon matSuffix>person</mat-icon>
+    </mat-form-field>
+
+    <!-- Email -->
+    <mat-form-field appearance="outline" class="edu-field full-width">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" [(ngModel)]="email"
+             placeholder="you@example.com" />
+      <mat-icon matSuffix>email</mat-icon>
+    </mat-form-field>
+
+    <!-- Password -->
+    <mat-form-field appearance="outline" class="edu-field full-width">
+      <mat-label>Password</mat-label>
+      <input matInput [type]="showPass ? 'text' : 'password'"
+             [(ngModel)]="password" />
+      <mat-icon matSuffix (click)="togglePassword()" style="cursor:pointer">
+        {{ showPass ? 'visibility_off' : 'visibility' }}
+      </mat-icon>
+      <mat-hint>Minimum 6 characters</mat-hint>
+    </mat-form-field>
+
+    <!-- Register Button -->
+    <button mat-raised-button class="submit-btn"
+            (click)="register()" [disabled]="submitting">
+      <mat-icon>person_add</mat-icon>
+      {{ submitting ? 'Creating account...' : 'Create Account' }}
+    </button>
+
+    <!-- Login Link -->
+    <p class="auth-footer">
+      Already have an account?
+      <a routerLink="/login">Sign in</a>
+    </p>
+
+  </div>
+</div>

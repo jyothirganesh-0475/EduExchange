@@ -1,0 +1,299 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary: #6c63ff;
+  --secondary: #ff6584;
+  --accent: #43e97b;
+  --warning: #f9ca24;
+  --dark: #1a1a2e;
+  --card-bg: #ffffff;
+  --text: #2d3436;
+  --text-light: #636e72;
+  --shadow: 0 10px 40px rgba(108, 99, 255, 0.15);
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f0f2ff;
+  color: var(--text);
+  min-height: 100vh;
+}
+
+h1, h2, h3 { font-family: 'Nunito', sans-serif; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f0f2ff; }
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 10px;
+}
+
+// ── ANGULAR MATERIAL BUTTON OVERRIDES ─────────────────────────────────────────
+.mat-mdc-raised-button.mat-primary {
+  background: linear-gradient(135deg, #6c63ff, #a855f7) !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px !important;
+}
+
+.mat-mdc-raised-button.mat-accent {
+  background: linear-gradient(135deg, #43e97b, #38f9d7) !important;
+  color: #1a1a2e !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+}
+
+.mat-mdc-raised-button.mat-warn {
+  background: linear-gradient(135deg, #ff6584, #ff4757) !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+}
+
+// ── ANGULAR MATERIAL FORM FIELD BASE FIX ─────────────────────────────────────
+.mat-mdc-form-field {
+  .mdc-notched-outline__notch {
+    border-right: none !important;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    border-radius: 14px !important;
+    overflow: hidden !important;
+  }
+
+  .mdc-text-field__input {
+    padding-left: 4px !important;
+  }
+}
+
+// ── TOAST NOTIFICATIONS ───────────────────────────────────────────────────────
+.toast-success .mdc-snackbar__surface {
+  background: #065f46 !important;
+  border-left: 4px solid #10b981;
+  border-radius: 12px !important;
+  font-family: 'Poppins', sans-serif;
+}
+
+.toast-error .mdc-snackbar__surface {
+  background: #7f1d1d !important;
+  border-left: 4px solid #ef4444;
+  border-radius: 12px !important;
+  font-family: 'Poppins', sans-serif;
+}
+
+.toast-info .mdc-snackbar__surface {
+  background: #1e3a5f !important;
+  border-left: 4px solid #6c63ff;
+  border-radius: 12px !important;
+  font-family: 'Poppins', sans-serif;
+}
+
+.mdc-snackbar__label {
+  color: white !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+// Snackbar action button label — scoped ONLY to snackbar, not all buttons
+// (Global override was making auth card button labels invisible on white bg)
+mat-snack-bar-container .mdc-button__label {
+  color: rgba(255,255,255,0.7) !important;
+  font-size: 12px !important;
+}
+
+// ── SHARED FORM FIELD STYLES (edu-field) ──────────────────────────────────────
+// Used globally — no ::ng-deep needed in global styles.scss
+// Just add class="edu-field" to any mat-form-field
+
+.edu-field {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.edu-field .mdc-notched-outline__leading,
+.edu-field .mdc-notched-outline__notch,
+.edu-field .mdc-notched-outline__trailing {
+  border: none !important;
+}
+
+.edu-field .mat-mdc-text-field-wrapper {
+  background: #f0f2ff !important;
+  border-radius: 14px !important;
+  border: 1.5px solid rgba(108,99,255,0.25) !important;
+  padding: 0 12px !important;
+  overflow: hidden !important;
+}
+
+.edu-field.mat-focused .mat-mdc-text-field-wrapper {
+  border-color: #6c63ff !important;
+  box-shadow: 0 0 0 3px rgba(108,99,255,0.15) !important;
+}
+
+.edu-field .mdc-line-ripple {
+  display: none !important;
+}
+
+.edu-field .mat-mdc-form-field-focus-overlay {
+  background: transparent !important;
+}
+
+.edu-field .mat-mdc-floating-label {
+  color: #9ca3af !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  transition: all 0.2s ease !important;
+}
+
+.edu-field .mdc-floating-label--float-above {
+  color: #6c63ff !important;
+  top: 10px !important;
+  transform: translateY(0) scale(0.75) !important;
+}
+
+.edu-field input.mat-mdc-input-element,
+.edu-field textarea.mat-mdc-input-element {
+  color: #1a1a2e !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-weight: 500 !important;
+  caret-color: #6c63ff !important;
+  background: transparent !important;
+}
+
+.edu-field .mat-mdc-form-field-infix {
+  padding-top: 22px !important;
+  padding-bottom: 6px !important;
+  min-height: 56px !important;
+}
+
+.edu-field mat-icon {
+  color: #9ca3af !important;
+  cursor: pointer;
+}
+
+.edu-field .mat-mdc-select-value-text {
+  color: #1a1a2e !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-weight: 500 !important;
+}
+
+.edu-field .mat-mdc-select-arrow {
+  color: #6c63ff !important;
+}
+
+.edu-field .mat-mdc-select-panel {
+  background: white !important;
+  border-radius: 14px !important;
+  box-shadow: 0 10px 40px rgba(108,99,255,0.15) !important;
+}
+
+.edu-field .mat-mdc-option {
+  color: #1a1a2e !important;
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.edu-field .mat-mdc-option:hover {
+  background: #f0f2ff !important;
+}
+
+.edu-field .mat-mdc-option.mdc-list-item--selected {
+  background: #ede9fe !important;
+  color: #6c63ff !important;
+  font-weight: 700 !important;
+}
+
+.edu-field input:-webkit-autofill,
+.edu-field input:-webkit-autofill:hover,
+.edu-field input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 30px #f0f2ff inset !important;
+  -webkit-text-fill-color: #1a1a2e !important;
+}
+
+// ── GREEN VARIANT (upload-note) ───────────────────────────────────────────────
+// Use class="edu-field-green" on mat-form-field in upload-note.html
+
+.edu-field-green {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.edu-field-green .mdc-notched-outline__leading,
+.edu-field-green .mdc-notched-outline__notch,
+.edu-field-green .mdc-notched-outline__trailing {
+  border: none !important;
+}
+
+.edu-field-green .mat-mdc-text-field-wrapper {
+  background: #f0fff7 !important;
+  border-radius: 14px !important;
+  border: 1.5px solid rgba(67,233,123,0.3) !important;
+  padding: 0 12px !important;
+  overflow: hidden !important;
+}
+
+.edu-field-green.mat-focused .mat-mdc-text-field-wrapper {
+  border-color: #43e97b !important;
+  box-shadow: 0 0 0 3px rgba(67,233,123,0.15) !important;
+}
+
+.edu-field-green .mdc-line-ripple {
+  display: none !important;
+}
+
+.edu-field-green .mat-mdc-form-field-focus-overlay {
+  background: transparent !important;
+}
+
+.edu-field-green .mat-mdc-floating-label {
+  color: #9ca3af !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  transition: all 0.2s ease !important;
+}
+
+.edu-field-green .mdc-floating-label--float-above {
+  color: #00b894 !important;
+  top: 10px !important;
+  transform: translateY(0) scale(0.75) !important;
+}
+
+.edu-field-green input.mat-mdc-input-element,
+.edu-field-green textarea.mat-mdc-input-element {
+  color: #1a1a2e !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-weight: 500 !important;
+  caret-color: #43e97b !important;
+  background: transparent !important;
+}
+
+.edu-field-green .mat-mdc-form-field-infix {
+  padding-top: 22px !important;
+  padding-bottom: 6px !important;
+  min-height: 56px !important;
+}
+
+.edu-field-green .mat-mdc-select-arrow {
+  color: #43e97b !important;
+}
+
+.edu-field-green .mat-mdc-select-panel {
+  background: white !important;
+  border-radius: 14px !important;
+  box-shadow: 0 10px 40px rgba(67,233,123,0.15) !important;
+}
+
+.edu-field-green .mat-mdc-option {
+  color: #1a1a2e !important;
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.edu-field-green .mat-mdc-option:hover {
+  background: #f0fff7 !important;
+}
+
+.edu-field-green .mat-mdc-option.mdc-list-item--selected {
+  background: #d1fae5 !important;
+  color: #00b894 !important;
+  font-weight: 700 !important;
+}

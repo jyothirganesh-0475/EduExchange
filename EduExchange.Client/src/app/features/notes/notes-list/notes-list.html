@@ -1,0 +1,105 @@
+<div class="notes-page">
+
+  <!-- Header -->
+  <div class="header-section">
+    <h1>📝 Study Notes</h1>
+    <p>Browse and download notes shared by students</p>
+    <a routerLink="/upload-note" class="upload-btn">
+      <mat-icon>upload_file</mat-icon> Upload Notes
+    </a>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-card">
+    <mat-form-field appearance="outline" class="edu-field search-field">
+      <mat-label>🔍 Search notes...</mat-label>
+      <input matInput [(ngModel)]="searchQuery"
+             (input)="onFilterChange()"
+             placeholder="e.g. thermodynamics, signals..." />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="edu-field full-width">
+      <mat-label>🎓 Academic Level</mat-label>
+      <mat-select [(ngModel)]="selectedLevel" (selectionChange)="onFilterChange()">
+        <mat-option value="">All Levels</mat-option>
+        <mat-option *ngFor="let l of levels" [value]="l">{{ l }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="edu-field full-width">
+      <mat-label>📖 Subject</mat-label>
+      <mat-select [(ngModel)]="selectedSubject" (selectionChange)="onFilterChange()">
+        <mat-option value="">All Subjects</mat-option>
+        <mat-option *ngFor="let s of subjects" [value]="s">{{ s }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button class="clear-btn" (click)="clearFilters()"
+            *ngIf="searchQuery || selectedLevel || selectedSubject">
+      <mat-icon>clear</mat-icon> Clear
+    </button>
+  </div>
+
+  <!-- Results bar -->
+  <div class="results-bar">
+    <span>{{ filtered.length }} note{{ filtered.length !== 1 ? 's' : '' }} found</span>
+    <span *ngIf="totalPages > 1">
+      Showing {{ startIdx + 1 }}–{{ (startIdx + pageSize) > filtered.length
+        ? filtered.length : (startIdx + pageSize) }} of {{ filtered.length }}
+    </span>
+  </div>
+
+  <!-- Notes Grid -->
+  <div class="notes-grid" *ngIf="notes.length > 0; else noNotes">
+    <div class="note-card" *ngFor="let note of notes">
+
+      <div class="note-icon-wrap">
+        <mat-icon class="note-icon">{{ getFileIcon(note.filePath) }}</mat-icon>
+      </div>
+
+      <span class="level-badge"
+            [style.background]="getLevelColor(note.academicLevel) + '22'"
+            [style.color]="getLevelColor(note.academicLevel)">
+        {{ note.academicLevel }}
+      </span>
+
+      <div class="note-title">{{ note.title }}</div>
+      <div class="note-subject">📖 {{ note.subject }}</div>
+
+      <div class="note-footer">
+        <span class="note-uploader">
+          <mat-icon>person</mat-icon>
+          {{ note.uploader?.username || 'Unknown' }}
+        </span>
+        <button class="download-btn" (click)="download(note)">
+          <mat-icon>download</mat-icon> Download
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button class="page-btn nav-btn" (click)="prevPage()" [disabled]="page === 1">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <button class="page-btn" *ngFor="let p of pages"
+            [class.active]="p === page" (click)="goToPage(p)">
+      {{ p }}
+    </button>
+    <button class="page-btn nav-btn" (click)="nextPage()" [disabled]="page === totalPages">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+    <span class="page-info">Page {{ page }} of {{ totalPages }}</span>
+  </div>
+
+  <ng-template #noNotes>
+    <div class="no-notes">
+      📭 No notes found.
+      <a routerLink="/upload-note">Upload the first one!</a>
+    </div>
+  </ng-template>
+
+</div>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="420" viewBox="0 0 300 420">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b0000;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b000099;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="stripe" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.15" />
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="300" height="420" fill="url(#bg)"/>
+
+  <!-- Top stripe -->
+  <rect width="300" height="80" fill="url(#stripe)"/>
+
+  <!-- Bottom bar -->
+  <rect y="360" width="300" height="60" fill="rgba(0,0,0,0.3)"/>
+
+  <!-- Decorative lines -->
+  <rect x="20" y="20" width="260" height="4" fill="white" opacity="0.5" rx="2"/>
+  <rect x="20" y="396" width="260" height="4" fill="white" opacity="0.5" rx="2"/>
+
+  <!-- Book icon -->
+  <text x="150" y="110" font-size="48" text-anchor="middle">📚</text>
+
+  <!-- Title -->
+  <text x="150" y="160" font-family="Georgia,serif" font-size="22" font-weight="bold" fill="white" text-anchor="middle">Advanced Engineering</text><text x="150" y="198" font-family="Georgia,serif" font-size="22" font-weight="bold" fill="white" text-anchor="middle">Mathematics</text>
+
+  <!-- Author -->
+  <text x="150" y="385" font-family="Arial,sans-serif" font-size="14" fill="rgba(255,255,255,0.9)" text-anchor="middle">Kreyszig</text>
+
+  <!-- EduExchange watermark -->
+  <text x="150" y="410" font-family="Arial,sans-serif" font-size="10" fill="rgba(255,255,255,0.4)" text-anchor="middle">EduExchange</text>
+</svg>

@@ -1,0 +1,91 @@
+<div class="container" *ngIf="book">
+  <div class="detail-card">
+
+    <!-- Book Image -->
+    <div class="book-image-section">
+      <img
+        *ngIf="book.imagePath"
+        [src]="getImageUrl(book.imagePath)"
+        alt="{{ book.title }}"
+        class="book-image"
+        (error)="onImgError($event)"
+      />
+      <div class="image-placeholder" *ngIf="!book.imagePath">
+        <span>📖</span>
+        <p>No cover image</p>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="card-header">
+      <div class="book-title">{{ book.title }}</div>
+      <div class="book-author">by {{ book.author }}</div>
+    </div>
+
+    <!-- Info Grid -->
+    <div class="card-body">
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="label">📚 Subject</div>
+          <div class="value">{{ book.subject || 'N/A' }}</div>
+        </div>
+        <div class="info-item">
+          <div class="label">🎓 Academic Level</div>
+          <div class="value">{{ book.academicLevel }}</div>
+        </div>
+        <div class="info-item">
+          <div class="label">📋 Condition</div>
+          <div class="value">{{ book.condition }}</div>
+        </div>
+        <div class="info-item">
+          <div class="label">🔖 Status</div>
+          <div class="value">
+            <span [class]="book.status === 'Available' ? 'badge-green' : 'badge-red'">
+              {{ book.status }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="contact-section" *ngIf="book.contactNumber">
+      <div class="contact-title">
+        <mat-icon>contact_phone</mat-icon>
+        Contact Owner
+      </div>
+      <div class="contact-row">
+        <div class="contact-item">
+          <span class="contact-label">👤 Owner</span>
+          <span class="contact-value">{{ book.owner?.username || 'N/A' }}</span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">📞 Mobile</span>
+          <span class="contact-value contact-number">{{ book.contactNumber }}</span>
+        </div>
+      </div>
+     <button class="whatsapp-btn" (click)="openWhatsApp()">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+       width="20" height="20" alt="WhatsApp" />
+  Chat on WhatsApp
+</button>
+    </div>
+
+    <!-- Actions -->
+    <div class="card-actions">
+      <button mat-raised-button color="primary" routerLink="/books">
+        <mat-icon>arrow_back</mat-icon> Back
+      </button>
+      <button mat-raised-button color="warn" (click)="requestExchange()"
+        *ngIf="!isOwner"
+        [disabled]="book.status !== 'Available'">
+        <mat-icon>swap_horiz</mat-icon> Request Exchange
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<div class="container" *ngIf="!book">
+  <p>Loading book details...</p>
+</div>

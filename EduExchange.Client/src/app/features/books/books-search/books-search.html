@@ -1,0 +1,98 @@
+<div class="books-page">
+
+  <!-- Header -->
+  <div class="header-section">
+    <h1>📚 Books</h1>
+    <p>Browse books shared by students across India</p>
+    <a routerLink="/add-book" class="add-btn">
+      <mat-icon>add</mat-icon> List a Book
+    </a>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-card">
+    <mat-form-field appearance="outline" class="edu-field search-field">
+      <mat-label>🔍 Search books...</mat-label>
+      <input matInput [(ngModel)]="searchQuery"
+             (input)="onFilter()"
+             placeholder="e.g. Digital Electronics, Morris Mano..." />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="edu-field full-width">
+      <mat-label>🎓 Academic Level</mat-label>
+      <mat-select [(ngModel)]="selectedLevel" (selectionChange)="onFilter()">
+        <mat-option value="">All Levels</mat-option>
+        <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button class="clear-btn" (click)="clearFilters()"
+            *ngIf="searchQuery || selectedLevel">
+      <mat-icon>clear</mat-icon> Clear
+    </button>
+  </div>
+
+  <!-- Results bar -->
+  <div class="results-bar">
+    <span>{{ allBooks.length }} book{{ allBooks.length !== 1 ? 's' : '' }} available</span>
+    <span *ngIf="totalPages > 1">
+      Showing {{ startIndex + 1 }}–{{ endIndex > allBooks.length ? allBooks.length : endIndex }}
+      of {{ allBooks.length }}
+    </span>
+  </div>
+
+  <!-- Books Grid -->
+  <div class="books-grid" *ngIf="books.length > 0; else noBooks">
+    <div class="book-card" *ngFor="let book of books">
+
+      <div class="book-image-wrap">
+        <img [src]="getBookImageUrl(book.imagePath)"
+             [alt]="book.title" class="book-img"
+             onerror="this.src='assets/default-book.svg'" />
+      </div>
+
+      <div class="book-title">{{ book.title }}</div>
+      <div class="book-author">by {{ book.author }}</div>
+
+      <div class="book-tags">
+        <span class="tag level">{{ book.academicLevel }}</span>
+        <span class="tag condition">{{ book.condition }}</span>
+      </div>
+
+      <div class="book-footer">
+        <span class="listed-by">👤 {{ book.owner?.username }}</span>
+        <span [class]="book.status === 'Available' ? 'badge-green' : 'badge-red'">
+          {{ book.status }}
+        </span>
+        <button mat-icon-button color="primary"
+                [routerLink]="['/books', book.bookId]">
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button class="page-btn nav-btn" (click)="prevPage()" [disabled]="page === 1">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <button class="page-btn" *ngFor="let p of pages"
+            [class.active]="p === page" (click)="goToPage(p)">
+      {{ p }}
+    </button>
+    <button class="page-btn nav-btn" (click)="nextPage()" [disabled]="page === totalPages">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+    <span class="page-info">Page {{ page }} of {{ totalPages }}</span>
+  </div>
+
+  <ng-template #noBooks>
+    <div class="no-books">
+      📭 No books available yet. Be the first to list one!
+    </div>
+  </ng-template>
+
+</div>

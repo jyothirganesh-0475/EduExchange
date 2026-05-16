@@ -1,0 +1,27 @@
+# ==========================================
+# .NET Core Backend / Visual Studio
+# ==========================================
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
+appsettings.Development.json
+*.secrets.json
+
+# ==========================================
+# Angular Frontend / Node / SCSS
+# ==========================================
+node_modules/
+.angular/
+dist/
+.sass-cache/
+npm-debug.log*
+
+# ==========================================
+# Environment & OS files
+# ==========================================
+.env
+.env.local
+.DS_Store
+Thumbs.db
