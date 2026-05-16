@@ -206,7 +206,8 @@ public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto
     user.ResetTokenExpires = DateTime.UtcNow.AddHours(1); 
     await _context.SaveChangesAsync();
 
-    var resetLink = $"http://localhost:4200/reset-password?token={user.PasswordResetToken}&email={user.Email}";
+    var clientBaseUrl = _config["ClientApp:BaseUrl"] ?? "http://localhost:4200";
+    var resetLink = $"{clientBaseUrl}/reset-password?token={user.PasswordResetToken}&email={user.Email}";
 
     // Construct the HTML Email
     string emailBody = $@"
