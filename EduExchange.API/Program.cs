@@ -9,25 +9,39 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // ── Database (Dynamic Provider based on Environment) ──────────────────────────
+// ── Database (Dynamic Provider based on Environment) ──────────────────────────
 if (builder.Environment.IsDevelopment())
 {
-    // Use SQL Server locally (Server=. = default local SQL Server instance)
+    // Use standard SQL Server locally
     builder.Services.AddDbContext<AppDbContext>(opt =>
         opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 }
 else
 {
-    // Use PostgreSQL when deployed on Render.
-    // Render sets DATABASE_URL automatically; fall back to appsettings if not present.
-    var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-    var pgConnStr   = !string.IsNullOrEmpty(databaseUrl)
-        ? databaseUrl
-        : builder.Configuration.GetConnectionString("DefaultConnection");
+    // Production (Render PostgreSQL Formatting Fix)
+    var rawConnString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+    // If Render passes a "postgres://" URL, convert it to standard .NET format
+    if (!string.IsNullOrEmpty(rawConnString) && rawConnString.StartsWith("postgres://"))
+    {
+        var databaseUri = new Uri(rawConnString);
+        var userInfo = databaseUri.UserInfo.Split(':');
+
+        var username = userInfo[0];
+        var password = userInfo.Length > 1 ? userInfo[1] : string.Empty;
+        var databaseName = databaseUri.LocalPath.TrimStart('/');
+        
+        // Split host and port if present
+        var host = databaseUri.Host;
+        var port = databaseUri.Port != -1 ? databaseUri.Port : 5432;
+
+        // Rebuild into the format Npgsql expects
+        rawConnString = $"Host={host};Port={port};Database={databaseName};Username={username};Password={password};SSL Mode=Require;Trust Server Certificate=True;";
+    }
 
     builder.Services.AddDbContext<AppDbContext>(opt =>
-        opt.UseNpgsql(pgConnStr));
+        opt.UseNpgsql(rawConnString));
 }
-
 // ── MVC Architecture ──────────────────────────────────────────────────────────
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IBookService, BookService>();
