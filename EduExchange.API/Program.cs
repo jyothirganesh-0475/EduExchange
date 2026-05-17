@@ -9,38 +9,39 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // ── Database (Dynamic Provider based on Environment) ──────────────────────────
-// ── Database (Dynamic Provider based on Environment) ──────────────────────────
-if (builder.Environment.IsDevelopment())
+// ── Database (Bulletproof Render/Local Routing with Protocol Patch) ───────────
+var renderDbUrl = Environment.GetEnvironmentVariable("RENDER_DB_URL");
+
+if (string.IsNullOrEmpty(renderDbUrl))
 {
-    // Use standard SQL Server locally
+    // NO Render URL found -> Running locally on your laptop
     builder.Services.AddDbContext<AppDbContext>(opt =>
         opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 }
 else
 {
-    // Production (Render PostgreSQL Formatting Fix)
-    var rawConnString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-    // If Render passes a "postgres://" URL, convert it to standard .NET format
-    if (!string.IsNullOrEmpty(rawConnString) && rawConnString.StartsWith("postgres://"))
+    // Render URL FOUND -> Live environment. Re-format for Npgsql.
+    var formattedUrl = renderDbUrl;
+    
+    // Standardize protocol so Uri class handles it properly
+    if (formattedUrl.StartsWith("postgresql://"))
     {
-        var databaseUri = new Uri(rawConnString);
-        var userInfo = databaseUri.UserInfo.Split(':');
-
-        var username = userInfo[0];
-        var password = userInfo.Length > 1 ? userInfo[1] : string.Empty;
-        var databaseName = databaseUri.LocalPath.TrimStart('/');
-        
-        // Split host and port if present
-        var host = databaseUri.Host;
-        var port = databaseUri.Port != -1 ? databaseUri.Port : 5432;
-
-        // Rebuild into the format Npgsql expects
-        rawConnString = $"Host={host};Port={port};Database={databaseName};Username={username};Password={password};SSL Mode=Require;Trust Server Certificate=True;";
+        formattedUrl = "postgres://" + formattedUrl.Substring("postgresql://".Length);
     }
 
+    var databaseUri = new Uri(formattedUrl);
+    var userInfo = databaseUri.UserInfo.Split(':');
+
+    var username = userInfo[0];
+    var password = userInfo.Length > 1 ? userInfo[1] : string.Empty;
+    var databaseName = databaseUri.LocalPath.TrimStart('/');
+    var host = databaseUri.Host;
+    var port = databaseUri.Port != -1 ? databaseUri.Port : 5432;
+
+    var npgsqlConnString = $"Host={host};Port={port};Database={databaseName};Username={username};Password={password};SSL Mode=Require;Trust Server Certificate=True;";
+
     builder.Services.AddDbContext<AppDbContext>(opt =>
-        opt.UseNpgsql(rawConnString));
+        opt.UseNpgsql(npgsqlConnString));
 }
 // ── MVC Architecture ──────────────────────────────────────────────────────────
 builder.Services.AddScoped<IBookRepository, BookRepository>();
