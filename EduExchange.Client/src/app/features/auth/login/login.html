@@ -25,38 +25,39 @@
       <span class="divider-line"></span>
     </div>
 
-    <!-- Email -->
-    <mat-form-field appearance="outline" class="edu-field full-width">
-      <mat-label>Email</mat-label>
-      <input matInput type="email" [(ngModel)]="email"
-             placeholder="you@example.com"
-             (keyup.enter)="login()" />
-      <mat-icon matSuffix>email</mat-icon>
-    </mat-form-field>
+    <form (ngSubmit)="loginForm.form.valid && login()" #loginForm="ngForm">
+      <!-- Email -->
+      <mat-form-field appearance="outline" class="edu-field full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" [(ngModel)]="email" name="email"
+               placeholder="you@example.com"
+               required />
+        <mat-icon matSuffix>email</mat-icon>
+      </mat-form-field>
 
-    <!-- Password -->
-    <mat-form-field appearance="outline" class="edu-field full-width">
-      <mat-label>Password</mat-label>
-      <input matInput [type]="showPass ? 'text' : 'password'"
-             [(ngModel)]="password"
-             (keyup.enter)="login()" />
-      <mat-icon matSuffix (click)="togglePassword()" style="cursor:pointer">
-        {{ showPass ? 'visibility_off' : 'visibility' }}
-      </mat-icon>
-    </mat-form-field>
+      <!-- Password -->
+      <mat-form-field appearance="outline" class="edu-field full-width">
+        <mat-label>Password</mat-label>
+        <input matInput [type]="showPass ? 'text' : 'password'"
+               [(ngModel)]="password" name="password"
+               required />
+        <mat-icon matSuffix (click)="togglePassword()" style="cursor:pointer">
+          {{ showPass ? 'visibility_off' : 'visibility' }}
+        </mat-icon>
+      </mat-form-field>
 
-   <div *ngIf="showForgotLink" class="forgot-password-container">
-  <p class="error-text">Incorrect details.</p>
-  <a (click)="handleForgotPassword()" class="forgot-link">Forgot Password?</a>
-</div>
+      <div *ngIf="showForgotLink" class="forgot-password-container">
+        <p class="error-text">Incorrect details.</p>
+        <a (click)="handleForgotPassword()" class="forgot-link">Forgot Password?</a>
+      </div>
 
-
-    <!-- Login Button -->
-    <button mat-raised-button class="submit-btn"
-            (click)="login()" [disabled]="submitting">
-      <mat-icon>login</mat-icon>
-      {{ submitting ? 'Signing in...' : 'Sign In' }}
-    </button>
+      <!-- Login Button -->
+      <button type="submit" mat-raised-button class="submit-btn"
+              [disabled]="submitting">
+        <mat-icon>login</mat-icon>
+        {{ submitting ? 'Signing in...' : 'Sign In' }}
+      </button>
+    </form>
 
     <!-- Register Link -->
     <p class="auth-footer">

@@ -19,6 +19,10 @@
   max-width: 440px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
   animation: fadeInUp 0.5s ease;
+
+  @media (max-width: 480px) {
+    padding: 30px 20px;
+  }
 }
 
 // ── Logo ──────────────────────────────────────────────────────────────────────

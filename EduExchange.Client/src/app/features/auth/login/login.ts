@@ -57,12 +57,20 @@ export class LoginComponent implements OnInit {
           cancel_on_tap_outside: true
         });
 
+        const container = document.getElementById('google-btn-container');
+        let btnWidth = container ? container.clientWidth : 350;
+        if (!btnWidth || btnWidth === 0) {
+          btnWidth = window.innerWidth < 480 ? window.innerWidth - 72 : 350;
+        }
+        // Google button width must be between 200 and 400
+        btnWidth = Math.max(200, Math.min(btnWidth, 400));
+
         (window as any).google.accounts.id.renderButton(
-          document.getElementById('google-btn-container'),
+          container,
           {
             theme:     'outline',
             size:      'large',
-            width:     350,
+            width:     btnWidth,
             text:      'signin_with',
             shape:     'rectangular',
             logo_alignment: 'left'
