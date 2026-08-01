@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/books']);
+      this.router.navigate(['/discover']);
       return;
     }
     this.initGoogleSignIn();
@@ -99,7 +99,7 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/profile-setup']);
           } else {
             this.toast.success(`Welcome back, ${res.username}!`);
-            this.router.navigate(['/books']);
+            this.router.navigate(['/discover']);
           }
           this.cdr.detectChanges();
         },
@@ -122,7 +122,7 @@ export class LoginComponent implements OnInit {
     next: (res: any) => {
     this.authService.saveSession(res);
     this.submitting = false;
-    this.router.navigate(['/books']);
+    this.router.navigate(['/discover']);
     },
     error: (err: any) => {
       this.submitting = false;

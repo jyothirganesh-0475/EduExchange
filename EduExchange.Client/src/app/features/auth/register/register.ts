@@ -38,7 +38,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/books']);
+      this.router.navigate(['/discover']);
       return;
     }
     this.initGoogleSignUp();

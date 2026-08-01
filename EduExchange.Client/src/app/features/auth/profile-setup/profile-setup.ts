@@ -60,7 +60,7 @@ export class ProfileSetupComponent implements OnInit {
   }
 
   skip() {
-    this.router.navigate(['/books']);
+    this.router.navigate(['/discover']);
   }
 
   save() {
@@ -89,13 +89,13 @@ export class ProfileSetupComponent implements OnInit {
       next: () => {
         this.submitting = false;
         this.toast.success('Profile saved! Welcome to EduExchange 🎉');
-        this.router.navigate(['/books']);
+        this.router.navigate(['/discover']);
       },
       error: () => {
         // localStorage already saved above — safe to proceed
         this.submitting = false;
         this.toast.success('Welcome to EduExchange 🎉');
-        this.router.navigate(['/books']);
+        this.router.navigate(['/discover']);
       }
     });
   }
