@@ -89,12 +89,13 @@ builder.Services.AddSwaggerGen();
 // ── CORS ──────────────────────────────────────────────────────────────────────
 // Production origin is read from appsettings.Production.json (ClientApp:BaseUrl),
 // overridable via the CLIENTAPP__BASEURL environment variable on Render.
-var productionOrigin = builder.Configuration["ClientApp:BaseUrl"] ?? "https://YOUR_RENDER_FRONTEND_URL";
+var productionOrigin = builder.Configuration["ClientApp:BaseUrl"] ?? "https://edu-exchange-green.vercel.app";
 
 builder.Services.AddCors(opt =>
     opt.AddPolicy("AllowAngular", p =>
         p.WithOrigins(
             "http://localhost:4200",
+            "https://edu-exchange-green.vercel.app",
             productionOrigin
           )
          .AllowAnyMethod()
