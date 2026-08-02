@@ -1,5 +1,5 @@
 <div class="auth-page">
-  <div class="auth-card">
+  <div class="auth-card animate-fade-in-up">
 
     <!-- Logo -->
     <div class="auth-logo">
@@ -19,51 +19,47 @@
     </div>
 
     <!-- Divider -->
-    <div class="divider">
-      <span class="divider-line"></span>
-      <span class="divider-text">or sign in with email</span>
-      <span class="divider-line"></span>
-    </div>
+    <div class="divider">or sign in with email</div>
 
-    <form (ngSubmit)="loginForm.form.valid && login()" #loginForm="ngForm">
+    <form (ngSubmit)="loginForm.form.valid && login()" #loginForm="ngForm" class="auth-form">
       <!-- Email -->
-      <mat-form-field appearance="outline" class="edu-field full-width">
-        <mat-label>Email</mat-label>
-        <input matInput type="email" [(ngModel)]="email" name="email"
-               placeholder="you@example.com"
-               required />
-        <mat-icon matSuffix>email</mat-icon>
-      </mat-form-field>
+      <div class="form-group">
+        <div class="input-container">
+          <input type="email" class="form-input" [(ngModel)]="email" name="email"
+                 placeholder="Email" required />
+          <mat-icon class="input-icon">email</mat-icon>
+        </div>
+      </div>
 
       <!-- Password -->
-      <mat-form-field appearance="outline" class="edu-field full-width">
-        <mat-label>Password</mat-label>
-        <input matInput [type]="showPass ? 'text' : 'password'"
-               [(ngModel)]="password" name="password"
-               required />
-        <mat-icon matSuffix (click)="togglePassword()" style="cursor:pointer">
-          {{ showPass ? 'visibility_off' : 'visibility' }}
-        </mat-icon>
-      </mat-form-field>
+      <div class="form-group">
+        <div class="input-container">
+          <input [type]="showPass ? 'text' : 'password'" class="form-input"
+                 [(ngModel)]="password" name="password"
+                 placeholder="Password" required />
+          <mat-icon class="input-icon cursor-pointer" (click)="togglePassword()">
+            {{ showPass ? 'visibility_off' : 'visibility' }}
+          </mat-icon>
+        </div>
+      </div>
 
-      <div *ngIf="showForgotLink" class="forgot-password-container">
+      <div *ngIf="showForgotLink" class="error-container">
         <p class="error-text">Incorrect details.</p>
         <a (click)="handleForgotPassword()" class="forgot-link">Forgot Password?</a>
       </div>
 
       <!-- Login Button -->
-      <button type="submit" mat-raised-button class="submit-btn"
-              [disabled]="submitting">
-        <mat-icon>login</mat-icon>
-        {{ submitting ? 'Signing in...' : 'Sign In' }}
+      <button type="submit" class="submit-btn" [disabled]="submitting">
+        <mat-icon class="submit-icon">login</mat-icon>
+        <span>{{ submitting ? 'Signing in...' : 'Sign In' }}</span>
       </button>
     </form>
 
     <!-- Register Link -->
     <p class="auth-footer">
       Don't have an account?
-      <a routerLink="/register">Create one</a>
+      <a routerLink="/register" class="register-link">Create one</a>
     </p>
 
   </div>
-</div>
+</div>

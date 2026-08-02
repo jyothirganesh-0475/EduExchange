@@ -39,8 +39,12 @@
     "@angular/build": "^21.1.4",
     "@angular/cli": "^21.1.4",
     "@angular/compiler-cli": "^21.1.0",
+    "@tailwindcss/postcss": "^4.3.3",
     "@types/google.accounts": "^0.0.18",
+    "autoprefixer": "^10.5.4",
     "jsdom": "^27.1.0",
+    "postcss": "^8.5.25",
+    "tailwindcss": "^4.3.3",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"
   }

@@ -2,9 +2,6 @@ import { Component, OnInit, inject, ChangeDetectorRef, NgZone } from '@angular/c
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../../core/services/auth';
 import { ToastService } from '../../../core/services/toast';
@@ -16,7 +13,7 @@ import { environment } from '../../../../environments/environment';
   standalone: true,
   imports: [
     CommonModule, FormsModule, RouterModule,
-    MatCardModule, MatButtonModule, MatInputModule, MatIconModule
+    MatIconModule
   ],
   templateUrl: './login.html',
   styleUrl:    './login.scss'

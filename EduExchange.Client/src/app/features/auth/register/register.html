@@ -1,5 +1,5 @@
 <div class="auth-page">
-  <div class="auth-card">
+  <div class="auth-card animate-fade-in-up">
 
     <!-- Logo -->
     <div class="auth-logo">
@@ -19,49 +19,62 @@
     </div>
 
     <!-- Divider -->
-    <div class="divider">
-      <span class="divider-line"></span>
-      <span class="divider-text">or register with email</span>
-      <span class="divider-line"></span>
-    </div>
+    <div class="divider">or register with email</div>
 
-    <!-- Username -->
-    <mat-form-field appearance="outline" class="edu-field full-width">
-      <mat-label>Username</mat-label>
-      <input matInput [(ngModel)]="username" placeholder="e.g. rahul_ece" />
-      <mat-icon matSuffix>person</mat-icon>
-    </mat-form-field>
+    <form (ngSubmit)="registerForm.form.valid && register()" #registerForm="ngForm" class="auth-form">
+      <!-- Username -->
+      <div class="form-group">
+        <div class="input-container">
+          <input type="text" class="form-input" [(ngModel)]="username" name="username"
+                 placeholder="Username (e.g. rahul_ece)" required />
+          <mat-icon class="input-icon">person</mat-icon>
+        </div>
+      </div>
 
-    <!-- Email -->
-    <mat-form-field appearance="outline" class="edu-field full-width">
-      <mat-label>Email</mat-label>
-      <input matInput type="email" [(ngModel)]="email"
-             placeholder="you@example.com" />
-      <mat-icon matSuffix>email</mat-icon>
-    </mat-form-field>
+      <!-- Email -->
+      <div class="form-group">
+        <div class="input-container">
+          <input type="email" class="form-input" [(ngModel)]="email" name="email"
+                 placeholder="Email" required />
+          <mat-icon class="input-icon">email</mat-icon>
+        </div>
+      </div>
 
-    <!-- Password -->
-    <mat-form-field appearance="outline" class="edu-field full-width">
-      <mat-label>Password</mat-label>
-      <input matInput [type]="showPass ? 'text' : 'password'"
-             [(ngModel)]="password" />
-      <mat-icon matSuffix (click)="togglePassword()" style="cursor:pointer">
-        {{ showPass ? 'visibility_off' : 'visibility' }}
-      </mat-icon>
-      <mat-hint>Minimum 6 characters</mat-hint>
-    </mat-form-field>
+      <!-- Password -->
+      <div class="form-group">
+        <div class="input-container">
+          <input [type]="showPass ? 'text' : 'password'" class="form-input"
+                 [(ngModel)]="password" name="password"
+                 placeholder="Password (Minimum 6 characters)" required minlength="6" />
+          <mat-icon class="input-icon cursor-pointer" (click)="togglePassword()">
+            {{ showPass ? 'visibility_off' : 'visibility' }}
+          </mat-icon>
+        </div>
+      </div>
 
-    <!-- Register Button -->
-    <button mat-raised-button class="submit-btn"
-            (click)="register()" [disabled]="submitting">
-      <mat-icon>person_add</mat-icon>
-      {{ submitting ? 'Creating account...' : 'Create Account' }}
-    </button>
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <div class="input-container">
+          <input [type]="showConfirmPass ? 'text' : 'password'" class="form-input"
+                 [(ngModel)]="confirmPassword" name="confirmPassword"
+                 placeholder="Confirm Password" required minlength="6" />
+          <mat-icon class="input-icon cursor-pointer" (click)="toggleConfirmPassword()">
+            {{ showConfirmPass ? 'visibility_off' : 'visibility' }}
+          </mat-icon>
+        </div>
+      </div>
+
+      <!-- Register Button -->
+      <button type="submit" class="submit-btn" [disabled]="submitting || !registerForm.form.valid">
+        <mat-icon class="submit-icon">person_add</mat-icon>
+        <span>{{ submitting ? 'Creating account...' : 'Create Account' }}</span>
+      </button>
+    </form>
 
     <!-- Login Link -->
     <p class="auth-footer">
       Already have an account?
-      <a routerLink="/login">Sign in</a>
+      <a routerLink="/login" class="login-link">Sign in</a>
     </p>
 
   </div>

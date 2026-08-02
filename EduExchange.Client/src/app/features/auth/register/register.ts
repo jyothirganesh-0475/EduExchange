@@ -2,9 +2,6 @@ import { Component, OnInit, inject, ChangeDetectorRef, NgZone } from '@angular/c
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../../core/services/auth';
 import { ToastService } from '../../../core/services/toast';
@@ -16,7 +13,7 @@ import { environment } from '../../../../environments/environment';
   standalone: true,
   imports: [
     CommonModule, FormsModule, RouterModule,
-    MatCardModule, MatButtonModule, MatInputModule, MatIconModule
+    MatIconModule
   ],
   templateUrl: './register.html',
   styleUrl:    './register.scss'
@@ -32,7 +29,9 @@ export class RegisterComponent implements OnInit {
   username     = '';
   email        = '';
   password     = '';
+  confirmPassword = '';
   showPass     = false;
+  showConfirmPass = false;
   submitting   = false;
   googleLoading = false;
 
@@ -100,12 +99,16 @@ export class RegisterComponent implements OnInit {
 
   // ── Regular registration ───────────────────────────────────────────────────
   register() {
-    if (!this.username.trim() || !this.email.trim() || !this.password.trim()) {
+    if (!this.username.trim() || !this.email.trim() || !this.password.trim() || !this.confirmPassword.trim()) {
       this.toast.error('Please fill in all fields.');
       return;
     }
     if (this.password.length < 6) {
       this.toast.error('Password must be at least 6 characters.');
+      return;
+    }
+    if (this.password !== this.confirmPassword) {
+      this.toast.error('Passwords do not match.');
       return;
     }
 
@@ -128,4 +131,5 @@ export class RegisterComponent implements OnInit {
   }
 
   togglePassword() { this.showPass = !this.showPass; }
+  toggleConfirmPassword() { this.showConfirmPass = !this.showConfirmPass; }
 }
