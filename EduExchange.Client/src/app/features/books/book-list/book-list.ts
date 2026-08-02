@@ -2,10 +2,6 @@ import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 
 import { BookService, Book } from '../../../core/services/book';
@@ -18,8 +14,7 @@ import { AuthService } from '../../../core/services/auth';
   standalone: true,
   imports: [
     CommonModule, FormsModule, RouterModule,
-    MatButtonModule, MatInputModule,
-    MatSelectModule, MatCardModule, MatIconModule
+    MatIconModule
   ],
   templateUrl: './book-list.html',
   styleUrl: './book-list.scss'

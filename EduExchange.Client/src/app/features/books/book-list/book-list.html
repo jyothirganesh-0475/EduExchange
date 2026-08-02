@@ -12,7 +12,7 @@
     </div>
     
     <div class="header-actions" *ngIf="isBooksMode">
-      <button mat-flat-button color="primary" routerLink="/add-book" class="add-btn">
+      <button routerLink="/add-book" class="add-btn">
         <mat-icon>add</mat-icon> List a Book
       </button>
     </div>
@@ -38,20 +38,17 @@
   </div>
 
   <div class="filter-card">
-    <mat-form-field appearance="outline" class="edu-field search-field">
-      <mat-label>🔍 Search by title, author, or keywords...</mat-label>
-      <input matInput [(ngModel)]="searchQuery" (input)="onSearch()" />
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
+    <div class="input-container search-field">
+      <input type="text" class="form-input" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" placeholder="🔍 Search by title, author, or keywords..." />
+      <mat-icon class="input-icon">search</mat-icon>
+    </div>
 
-    <mat-form-field appearance="outline" class="edu-field level-field"
-                    *ngIf="activeFilter === 'all' || activeFilter === 'books'">
-      <mat-label>🎓 Academic Level</mat-label>
-      <mat-select [(ngModel)]="selectedLevel" (selectionChange)="onSearch()">
-        <mat-option value="">All Levels</mat-option>
-        <mat-option *ngFor="let level of levels" [value]="level">{{ level }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="input-container level-field" *ngIf="activeFilter === 'all' || activeFilter === 'books'">
+      <select class="form-select" [(ngModel)]="selectedLevel" (ngModelChange)="onSearch()">
+        <option value="">🎓 All Levels</option>
+        <option *ngFor="let level of levels" [value]="level">{{ level }}</option>
+      </select>
+    </div>
   </div>
 
   <ng-container *ngIf="showBooks">
@@ -87,7 +84,7 @@
       <span [class]="book.status === 'Available' ? 'badge-green' : 'badge-red'">
         {{ book.status }}
       </span>
-      <button mat-icon-button color="primary"
+      <button class="forward-btn"
               [routerLink]="['/books', book.bookId]">
         <mat-icon>arrow_forward</mat-icon>
       </button>
@@ -181,7 +178,7 @@
             <span [class]="item.status === 'Available' ? 'badge-green' : 'badge-red'">
               {{ item.status }}
             </span>
-            <button mat-icon-button color="primary" [routerLink]="['/items', item.itemId]">
+            <button class="forward-btn" [routerLink]="['/items', item.itemId]">
               <mat-icon>arrow_forward</mat-icon>
             </button>
           </div>
