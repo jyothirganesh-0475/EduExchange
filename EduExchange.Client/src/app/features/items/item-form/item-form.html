@@ -90,7 +90,7 @@
     <mat-card-actions>
       <button mat-raised-button class="submit-btn"
               (click)="submit()" [disabled]="submitting">
-        <mat-icon>{{ isEditMode ? 'save' : 'publish' }}</mat-icon>
+        <mat-icon [class.spinner]="submitting">{{ submitting ? 'autorenew' : (isEditMode ? 'save' : 'publish') }}</mat-icon>
         {{ submitting ? 'Saving...' : (isEditMode ? 'Update Item' : 'List Item') }}
       </button>
       <button mat-stroked-button class="cancel-btn"

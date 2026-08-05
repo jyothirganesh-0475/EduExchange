@@ -106,7 +106,7 @@
 
     <mat-card-actions>
       <button mat-raised-button class="submit-btn" (click)="submitBook()" [disabled]="isSubmitting">
-        <mat-icon>{{ isSubmitting ? 'hourglass_empty' : 'save' }}</mat-icon>
+        <mat-icon [class.spinner]="isSubmitting">{{ isSubmitting ? 'autorenew' : 'save' }}</mat-icon>
         {{ isSubmitting ? 'Saving...' : (isEditMode ? 'Update Book' : 'Submit Listing') }}
       </button>
       <button mat-button class="cancel-btn" routerLink="/my-books" [disabled]="isSubmitting">

@@ -8,13 +8,14 @@ import { BookService, Book } from '../../../core/services/book';
 import { NotesService, Note } from '../../../core/services/notes';
 import { ItemService, Item } from '../../../core/services/item';
 import { AuthService } from '../../../core/services/auth';
+import { SkeletonCardComponent } from '../../../shared/components/skeleton-card/skeleton-card.component';
 
 @Component({
   selector: 'app-book-list',
   standalone: true,
   imports: [
     CommonModule, FormsModule, RouterModule,
-    MatIconModule
+    MatIconModule, SkeletonCardComponent
   ],
   templateUrl: './book-list.html',
   styleUrl: './book-list.scss'
@@ -44,6 +45,8 @@ export class BookListComponent implements OnInit {
   searchQuery   = '';
   selectedLevel = '';
   levels        = ['School', 'Undergraduate', 'Masters', 'PhD'];
+
+  isLoading = true;
 
   // ── Pagination ────────────────────────────────────────────────────────────
   booksPage = 1; booksPageSize = 6;
@@ -81,23 +84,38 @@ export class BookListComponent implements OnInit {
 
     // 1. Load Books
     if (this.showBooks) {
+      this.isLoading = true;
       this.bookService.getAll(this.selectedLevel, this.searchQuery, userId)
-        .subscribe(data => {
-          this.allBooks = data;
-          this.booksPage = 1;
-          this.updateBooksSlice();
-          this.cdr.detectChanges();
+        .subscribe({
+          next: data => {
+            this.allBooks = data;
+            this.booksPage = 1;
+            this.updateBooksSlice();
+            this.isLoading = false;
+            this.cdr.detectChanges();
+          },
+          error: () => {
+            this.isLoading = false;
+            this.cdr.detectChanges();
+          }
         });
     }
 
     // 2. Load Notes (Only if not in strict Books mode)
     if (!this.isBooksMode && this.showNotes) {
-      this.notesService.getAll().subscribe(data => {
-        // Filter out user's own notes if applicable
-        this.allNotes = data.filter(n => n.uploaderId !== userId);
-        this.notesPage = 1;
-        this.updateNotesSlice();
-        this.cdr.detectChanges();
+      this.isLoading = true;
+      this.notesService.getAll().subscribe({
+        next: data => {
+          this.allNotes = data.filter(n => n.uploaderId !== userId);
+          this.notesPage = 1;
+          this.updateNotesSlice();
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        }
       });
     } else if (this.isBooksMode) {
       this.allNotes = [];
@@ -105,12 +123,20 @@ export class BookListComponent implements OnInit {
 
     // 3. Load Items (Only if not in strict Books mode)
     if (!this.isBooksMode && this.showItems) {
+      this.isLoading = true;
       this.itemService.getAll(undefined, this.searchQuery, userId)
-        .subscribe(data => {
-          this.allItems = data;
-          this.itemsPage = 1;
-          this.updateItemsSlice();
-          this.cdr.detectChanges();
+        .subscribe({
+          next: data => {
+            this.allItems = data;
+            this.itemsPage = 1;
+            this.updateItemsSlice();
+            this.isLoading = false;
+            this.cdr.detectChanges();
+          },
+          error: () => {
+            this.isLoading = false;
+            this.cdr.detectChanges();
+          }
         });
     } else if (this.isBooksMode) {
       this.allItems = [];

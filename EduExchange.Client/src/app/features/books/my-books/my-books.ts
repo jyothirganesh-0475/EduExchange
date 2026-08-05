@@ -9,6 +9,7 @@ import { AuthService } from '../../../core/services/auth';
 import { ToastService } from '../../../core/services/toast';
 import { ErrorHandlerService } from '../../../core/services/error-handler';
 import { AssetsTabsComponent } from '../../../shared/components/assets-tabs/assets-tabs';
+import { SkeletonCardComponent } from '../../../shared/components/skeleton-card/skeleton-card.component';
 
 
 @Component({
@@ -17,7 +18,7 @@ import { AssetsTabsComponent } from '../../../shared/components/assets-tabs/asse
   imports: [
     CommonModule, RouterModule,
     MatButtonModule, MatIconModule, MatCardModule,
-    AssetsTabsComponent
+    AssetsTabsComponent, SkeletonCardComponent
   ],
   templateUrl: './my-books.html',
   styleUrl: './my-books.scss'
@@ -30,14 +31,16 @@ export class MyBooksComponent implements OnInit {
   private cdr          = inject(ChangeDetectorRef);
 
   books: Book[] = [];
+  isLoading = true;
 
   ngOnInit() { this.loadMyBooks(); }
 
   loadMyBooks() {
+    this.isLoading = true;
     const userId = this.authService.getUserId();
     this.bookService.getMyBooks(userId).subscribe({
-      next: (data) => { this.books = data; this.cdr.detectChanges(); },
-      error: (err)  => this.errorHandler.handle(err, 'Failed to load your books.')
+      next: (data) => { this.books = data; this.isLoading = false; this.cdr.detectChanges(); },
+      error: (err)  => { this.isLoading = false; this.errorHandler.handle(err, 'Failed to load your books.'); this.cdr.detectChanges(); }
     });
   }
 

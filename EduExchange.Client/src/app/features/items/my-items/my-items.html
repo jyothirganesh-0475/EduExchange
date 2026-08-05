@@ -13,8 +13,12 @@
     </a>
   </div>
 
+  <div *ngIf="isLoading" class="skeleton-wrapper">
+    <app-skeleton-card [count]="4" variant="card"></app-skeleton-card>
+  </div>
+
   <!-- Items Grid -->
-  <div class="items-grid" *ngIf="myItems.length > 0; else noMyItems">
+  <div class="items-grid" *ngIf="!isLoading && myItems.length > 0; else noMyItems">
     <div class="item-card" *ngFor="let item of myItems">
 
       <div class="item-cover">
@@ -51,7 +55,7 @@
   </div>
 
   <ng-template #noMyItems>
-    <div class="no-data">
+    <div class="no-data" *ngIf="!isLoading">
       <p>📦 You haven't listed any items yet.</p>
       <a routerLink="/add-item">
         <mat-icon>add</mat-icon> List Your First Item

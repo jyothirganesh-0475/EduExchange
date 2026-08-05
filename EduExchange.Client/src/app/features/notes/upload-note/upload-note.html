@@ -47,10 +47,10 @@
     </mat-card-content>
 
     <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="upload()">
-        <mat-icon>cloud_upload</mat-icon> Upload Notes
+      <button mat-raised-button color="primary" (click)="upload()" [disabled]="submitting">
+        <mat-icon [class.spinner]="submitting">{{ submitting ? 'autorenew' : 'cloud_upload' }}</mat-icon> {{ submitting ? 'Uploading...' : 'Upload Notes' }}
       </button>
-      <button mat-button routerLink="/notes">
+      <button mat-button routerLink="/notes" [disabled]="submitting">
         <mat-icon>arrow_back</mat-icon> Cancel
       </button>
     </mat-card-actions>

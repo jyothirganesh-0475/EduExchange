@@ -13,8 +13,12 @@
     </button>
   </div>
 
+  <div *ngIf="isLoading" class="skeleton-wrapper">
+    <app-skeleton-card [count]="4" variant="card"></app-skeleton-card>
+  </div>
+
   <!-- Books Grid -->
-  <div class="books-grid" *ngIf="books.length > 0; else noBooks">
+  <div class="books-grid" *ngIf="!isLoading && books.length > 0; else noBooks">
     <div class="book-card" *ngFor="let book of books">
       <span class="book-emoji">📚</span>
       <div class="book-title">{{ book.title }}</div>
@@ -40,7 +44,7 @@
   </div>
 
   <ng-template #noBooks>
-    <div class="no-data">📭 No books listed yet. <a routerLink="/add-book">Add your first book!</a></div>
+    <div class="no-data" *ngIf="!isLoading">📭 No books listed yet. <a routerLink="/add-book">Add your first book!</a></div>
   </ng-template>
 
 </div>

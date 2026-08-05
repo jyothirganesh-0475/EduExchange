@@ -1,2 +1,5 @@
+<div class="global-progress-bar" *ngIf="loadingService.isLoading$ | async">
+  <div class="progress-bar-inner"></div>
+</div>
 <app-navbar *ngIf="showNavbar"></app-navbar>
 <router-outlet></router-outlet>

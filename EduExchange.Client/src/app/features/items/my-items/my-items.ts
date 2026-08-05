@@ -8,6 +8,7 @@ import { ItemService, Item, ItemRequest } from '../../../core/services/item';
 import { AuthService } from '../../../core/services/auth';
 import { ToastService } from '../../../core/services/toast';
 import { AssetsTabsComponent } from '../../../shared/components/assets-tabs/assets-tabs';
+import { SkeletonCardComponent } from '../../../shared/components/skeleton-card/skeleton-card.component';
 
 @Component({
   selector: 'app-my-items',
@@ -15,7 +16,7 @@ import { AssetsTabsComponent } from '../../../shared/components/assets-tabs/asse
   imports: [
     CommonModule, RouterModule,
     MatIconModule, MatButtonModule, MatTooltipModule,
-    AssetsTabsComponent
+    AssetsTabsComponent, SkeletonCardComponent
   ],
   templateUrl: './my-items.html',
   styleUrl:    './my-items.scss'
@@ -28,6 +29,7 @@ export class MyItemsComponent implements OnInit {
   myItems          : Item[]        = [];
   receivedRequests : ItemRequest[] = [];
   sentRequests     : ItemRequest[] = [];
+  isLoading = true;
 
   get pendingReceivedCount(): number {
     return this.receivedRequests.filter(r => r.status === 'Pending').length;
@@ -38,9 +40,10 @@ export class MyItemsComponent implements OnInit {
   ngOnInit() { this.loadAll(); }
 
   loadAll() {
+    this.isLoading = true;
     this.itemService.getMyItems(this.userId).subscribe({
-      next: items => this.myItems = items,
-      error: () => this.toast.error('Failed to load your items.')
+      next: items => { this.myItems = items; this.isLoading = false; },
+      error: () => { this.toast.error('Failed to load your items.'); this.isLoading = false; }
     });
     this.itemService.getReceivedRequests(this.userId).subscribe({
       next: reqs => this.receivedRequests = reqs,

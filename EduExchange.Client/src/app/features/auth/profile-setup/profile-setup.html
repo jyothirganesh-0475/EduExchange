@@ -51,7 +51,7 @@
     <div class="setup-actions">
       <button mat-raised-button class="save-btn"
               (click)="save()" [disabled]="submitting">
-        <mat-icon>check_circle</mat-icon>
+        <mat-icon [class.spinner]="submitting">{{ submitting ? 'autorenew' : 'check_circle' }}</mat-icon>
         {{ submitting ? 'Saving...' : 'Save & Continue' }}
       </button>
       <button mat-stroked-button class="skip-btn" (click)="skip()">

@@ -11,6 +11,7 @@ import { AuthService } from '../../../core/services/auth';
 import { ToastService } from '../../../core/services/toast';
 import { ErrorHandlerService } from '../../../core/services/error-handler';
 import { NotificationService } from '../../../core/services/notification';
+import { SkeletonCardComponent } from '../../../shared/components/skeleton-card/skeleton-card.component';
 
 export interface UnifiedRequest {
   id:         number;
@@ -25,7 +26,7 @@ export interface UnifiedRequest {
 @Component({
   selector: 'app-exchange-list',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule, RouterModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule, RouterModule, SkeletonCardComponent],
   templateUrl: './exchange-list.html',
   styleUrl: './exchange-list.scss'
 })

@@ -46,6 +46,7 @@ export class UploadNoteComponent implements OnInit {
   categories  : Category[] = [];
   selectedFile: File | null = null;
   levels = ['School', 'Undergraduate', 'Masters', 'PhD'];
+  submitting = false;
 
   ngOnInit() {
     this.http.get<Category[]>(`${environment.apiUrl}/categories`).subscribe({
@@ -83,12 +84,16 @@ export class UploadNoteComponent implements OnInit {
     formData.append('file',          this.selectedFile);
     // uploaderId NOT appended — server reads from JWT
 
+    this.submitting = true;
     this.notesService.upload(formData).subscribe({
       next: () => {
         this.toast.success('Note uploaded successfully!');
         this.router.navigate(['/notes']);
       },
-      error: (err) => this.errorHandler.handle(err, 'Upload failed! Please try again.')
+      error: (err) => {
+        this.errorHandler.handle(err, 'Upload failed! Please try again.');
+        this.submitting = false;
+      }
     });
   }
 }

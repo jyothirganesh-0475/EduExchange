@@ -23,9 +23,8 @@
   </div>
 
   <!-- Loading -->
-  <div class="loading-wrap" *ngIf="isLoading">
-    <div class="spinner-ring"></div>
-    <p>Loading requests...</p>
+  <div *ngIf="isLoading" class="skeleton-wrapper" style="padding: 20px 0;">
+    <app-skeleton-card [count]="4" variant="row"></app-skeleton-card>
   </div>
 
   <ng-container *ngIf="!isLoading">

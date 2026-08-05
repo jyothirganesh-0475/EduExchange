@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { RouterOutlet, Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { NavbarComponent } from './shared/components/navbar/navbar';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from './core/services/notification';
 import { AuthService } from './core/services/auth';
+import { LoadingService } from './core/services/loading.service';
 import { interval, Subscription } from 'rxjs';
 import { filter } from 'rxjs';
 
@@ -18,9 +19,12 @@ export class App implements OnInit, OnDestroy {
   title      = 'EduExchange';
   showNavbar = false;
 
+  readonly loadingService = inject(LoadingService);
+
   private pollSub   : Subscription | null = null;
   private routeSub1 : Subscription | null = null;
   private routeSub2 : Subscription | null = null;
+  private routeLoadSub : Subscription | null = null;
 
   constructor(
     private router       : Router,
@@ -29,6 +33,20 @@ export class App implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // ── Global route-change loader ─────────────────────────────────────────
+    this.routeLoadSub = this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.loadingService.show();
+      }
+      if (
+        event instanceof NavigationEnd ||
+        event instanceof NavigationCancel ||
+        event instanceof NavigationError
+      ) {
+        this.loadingService.hide();
+      }
+    });
+
     // Show/hide navbar based on route
     this.routeSub1 = this.router.events.pipe(
       filter(e => e instanceof NavigationEnd)
@@ -75,5 +93,6 @@ export class App implements OnInit, OnDestroy {
     this.stopPolling();
     this.routeSub1?.unsubscribe();
     this.routeSub2?.unsubscribe();
+    this.routeLoadSub?.unsubscribe();
   }
 }

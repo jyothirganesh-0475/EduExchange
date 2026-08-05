@@ -66,7 +66,7 @@
 
       <!-- Register Button -->
       <button type="submit" class="submit-btn" [disabled]="submitting || !registerForm.form.valid">
-        <mat-icon class="submit-icon">person_add</mat-icon>
+        <mat-icon class="submit-icon" [class.spinner]="submitting">{{ submitting ? 'autorenew' : 'person_add' }}</mat-icon>
         <span>{{ submitting ? 'Creating account...' : 'Create Account' }}</span>
       </button>
     </form>

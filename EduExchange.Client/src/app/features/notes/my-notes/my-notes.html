@@ -13,8 +13,12 @@
     </a>
   </div>
 
+  <div *ngIf="isLoading" class="skeleton-wrapper">
+    <app-skeleton-card [count]="4" variant="card"></app-skeleton-card>
+  </div>
+
   <!-- Notes Grid -->
-  <div class="notes-grid" *ngIf="myNotes.length > 0; else noNotes">
+  <div class="notes-grid" *ngIf="!isLoading && myNotes.length > 0; else noNotes">
     <div class="note-card" *ngFor="let note of myNotes">
 
       <div class="note-icon-wrap">
@@ -45,7 +49,7 @@
   </div>
 
   <ng-template #noNotes>
-    <div class="no-notes">
+    <div class="no-notes" *ngIf="!isLoading">
       📭 You haven't uploaded any notes yet.
       <a routerLink="/upload-note">Upload your first note!</a>
     </div>

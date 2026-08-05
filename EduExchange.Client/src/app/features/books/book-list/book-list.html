@@ -60,9 +60,11 @@
       </div>
     </div>
 
+    <div *ngIf="isLoading" class="skeleton-wrapper">
+      <app-skeleton-card [count]="6" variant="card"></app-skeleton-card>
+    </div>
     
-
-<div class="books-grid" *ngIf="books.length > 0; else noBooks">
+    <div class="books-grid" *ngIf="!isLoading && books.length > 0; else noBooks">
   <div class="book-card" *ngFor="let book of books">
 
     <div class="book-image-wrap">
@@ -94,7 +96,7 @@
 </div>
 
     <ng-template #noBooks>
-      <div class="no-data">📭 No books matching your search.</div>
+      <div class="no-data" *ngIf="!isLoading">📭 No books matching your search.</div>
     </ng-template>
 
     <div class="pagination" *ngIf="booksTotalPages > 1">
@@ -120,7 +122,11 @@
       </div>
     </div>
 
-    <div class="notes-grid" *ngIf="notes.length > 0; else noNotes">
+    <div *ngIf="isLoading" class="skeleton-wrapper">
+      <app-skeleton-card [count]="6" variant="card"></app-skeleton-card>
+    </div>
+
+    <div class="notes-grid" *ngIf="!isLoading && notes.length > 0; else noNotes">
       <div class="note-card" *ngFor="let note of notes">
         <span class="note-emoji">📄</span>
         <div class="note-title">{{ note.title }}</div>
@@ -136,7 +142,7 @@
     </div>
 
     <ng-template #noNotes>
-      <div class="no-data">📭 No notes shared yet.</div>
+      <div class="no-data" *ngIf="!isLoading">📭 No notes shared yet.</div>
     </ng-template>
 
     <div class="pagination" *ngIf="notesTotalPages > 1">
@@ -162,7 +168,11 @@
       </div>
     </div>
 
-    <div class="books-grid" *ngIf="items.length > 0; else noItems">
+    <div *ngIf="isLoading" class="skeleton-wrapper">
+      <app-skeleton-card [count]="6" variant="card"></app-skeleton-card>
+    </div>
+
+    <div class="books-grid" *ngIf="!isLoading && items.length > 0; else noItems">
       <div class="book-card" *ngFor="let item of items" [routerLink]="['/items', item.itemId]" style="cursor:pointer">
         <span class="item-type-badge">
           {{ getTypeIcon(item.itemType) }} {{ item.itemType }}
@@ -189,7 +199,7 @@
     
 
     <ng-template #noItems>
-      <div class="no-data">📭 No items available yet.</div>
+      <div class="no-data" *ngIf="!isLoading">📭 No items available yet.</div>
     </ng-template>
 
     <div class="pagination" *ngIf="itemsTotalPages > 1">

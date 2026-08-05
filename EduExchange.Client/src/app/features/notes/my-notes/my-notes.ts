@@ -10,6 +10,7 @@ import { AuthService } from '../../../core/services/auth';
 import { ErrorHandlerService } from '../../../core/services/error-handler';
 import { ToastService } from '../../../core/services/toast';
 import { AssetsTabsComponent } from '../../../shared/components/assets-tabs/assets-tabs';
+import { SkeletonCardComponent } from '../../../shared/components/skeleton-card/skeleton-card.component';
 
 @Component({
   selector: 'app-my-notes',
@@ -17,7 +18,7 @@ import { AssetsTabsComponent } from '../../../shared/components/assets-tabs/asse
   imports: [
     CommonModule, FormsModule, RouterModule,
     MatButtonModule, MatInputModule, MatIconModule,
-    AssetsTabsComponent
+    AssetsTabsComponent, SkeletonCardComponent
   ],
   templateUrl: './my-notes.html',
   styleUrl:    './my-notes.scss'
@@ -30,17 +31,24 @@ export class MyNotesComponent implements OnInit {
   private cdr          = inject(ChangeDetectorRef);
 
   myNotes : Note[] = [];
+  isLoading = true;
 
   ngOnInit() { this.loadMyNotes(); }
 
   loadMyNotes() {
+    this.isLoading = true;
     const userId = this.authService.getUserId();
     this.notesService.getMyNotes(userId).subscribe({
       next: data => {
         this.myNotes = data;
+        this.isLoading = false;
         this.cdr.detectChanges();
       },
-      error: err => this.errorHandler.handle(err, 'Failed to load your notes.')
+      error: err => {
+        this.isLoading = false;
+        this.errorHandler.handle(err, 'Failed to load your notes.');
+        this.cdr.detectChanges();
+      }
     });
   }
 

@@ -50,7 +50,7 @@
 
       <!-- Login Button -->
       <button type="submit" class="submit-btn" [disabled]="submitting">
-        <mat-icon class="submit-icon">login</mat-icon>
+        <mat-icon class="submit-icon" [class.spinner]="submitting">{{ submitting ? 'autorenew' : 'login' }}</mat-icon>
         <span>{{ submitting ? 'Signing in...' : 'Sign In' }}</span>
       </button>
     </form>
