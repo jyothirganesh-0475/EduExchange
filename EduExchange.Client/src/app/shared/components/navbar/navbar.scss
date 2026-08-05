@@ -40,8 +40,21 @@ mat-toolbar {
   background: linear-gradient(135deg, #6c63ff, #a855f7) !important;
   color: white !important; border-radius: 20px !important; padding: 0 16px !important;
   font-weight: 700 !important; font-family: 'Poppins', sans-serif !important;
-  display: flex !important; align-items: center !important; gap: 4px !important;
   transition: all 0.3s ease !important;
+  
+  .user-btn-inner {
+    display: flex !important; align-items: center !important; gap: 6px !important;
+    white-space: nowrap; flex-wrap: nowrap;
+  }
+  
+  .username-label {
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+  }
+
   &:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(108,99,255,0.4) !important; }
   .arrow-icon { font-size: 18px !important; height: 18px !important; width: 18px !important; transition: transform 0.25s ease; margin-left: 2px; &.open { transform: rotate(180deg); } }
 }

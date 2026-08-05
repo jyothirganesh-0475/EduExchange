@@ -129,13 +129,15 @@
 
       <!-- User profile button -->
       <button mat-button class="user-btn" (click)="toggleProfile($event)">
-        <img *ngIf="profilePicture"
-             [src]="profilePicture"
-             (error)="onProfileImgError($event)"
-             class="avatar-img" alt="profile" />
-        <span *ngIf="!profilePicture" class="avatar-initials">{{ getInitials() }}</span>
-        {{ authService.getUsername() }}
-        <mat-icon class="arrow-icon" [class.open]="profileOpen">expand_more</mat-icon>
+        <div class="user-btn-inner">
+          <img *ngIf="profilePicture"
+               [src]="profilePicture"
+               (error)="onProfileImgError($event)"
+               class="avatar-img" alt="profile" />
+          <span *ngIf="!profilePicture" class="avatar-initials">{{ getInitials() }}</span>
+          <span class="username-label">{{ authService.getUsername() }}</span>
+          <mat-icon class="arrow-icon" [class.open]="profileOpen">expand_more</mat-icon>
+        </div>
       </button>
 
     </div>
@@ -175,7 +177,7 @@
   <div class="drawer-nav-body" style="padding: 20px 16px;">
     <div class="drawer-divider" style="margin-top:4px"></div>
 
-    <a class="drawer-link" routerLink="/books" (click)="closeMenu()">
+    <a class="drawer-link" routerLink="/discover" (click)="closeMenu()">
       <mat-icon>search</mat-icon> Discover
     </a>
     <div class="drawer-section-label">Exchanges</div>
